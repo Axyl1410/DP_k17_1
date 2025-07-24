@@ -1,16 +1,23 @@
 package presentation;
 
-import business.Student;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.text.SimpleDateFormat;
 import java.util.List;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
+import business.Student;
 
 public class StudentListViewUI extends JFrame {
     private final JTextField searchTextField;
     private final JButton addButton;
+    private final JButton reloadButton;
     private final JTable studentTable;
     private final DefaultTableModel tableModel;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -24,11 +31,19 @@ public class StudentListViewUI extends JFrame {
         JPanel topPanel = new JPanel(new BorderLayout(5, 5));
         searchTextField = new JTextField();
         addButton = new JButton("Thêm");
+        reloadButton = new JButton("Load lại");
+        JPanel buttonPanel = new JPanel(new BorderLayout(5, 5));
+        buttonPanel.add(addButton, BorderLayout.WEST);
+        buttonPanel.add(reloadButton, BorderLayout.EAST);
         topPanel.add(searchTextField, BorderLayout.CENTER);
-        topPanel.add(addButton, BorderLayout.EAST);
+        topPanel.add(buttonPanel, BorderLayout.EAST);
         add(topPanel, BorderLayout.NORTH);
+        addButton.addActionListener(e -> {
+            StudentFormUI form = new StudentFormUI();
+            form.setVisible(true);
+        });
         // Table
-        String[] columns = {"STT", "ID", "Họ & tên", "Ngày sinh", "Chuyên ngành", "Điểm TB", "Xếp loại"};
+        String[] columns = { "STT", "ID", "Họ & tên", "Ngày sinh", "Chuyên ngành", "Điểm TB", "Xếp loại" };
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -56,4 +71,7 @@ public class StudentListViewUI extends JFrame {
         }
     }
 
+    public JButton getReloadButton() {
+        return reloadButton;
+    }
 }

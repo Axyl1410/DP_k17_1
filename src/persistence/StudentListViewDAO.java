@@ -1,15 +1,19 @@
 package persistence;
 
-import business.EconomicsStudent;
-import business.SoftwareStudent;
-import business.Student;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import business.EconomicsStudent;
+import business.SoftwareStudent;
+import business.Student;
 
 public class StudentListViewDAO {
     private final Connection conn;
@@ -20,7 +24,6 @@ public class StudentListViewDAO {
         String password = "root";
         String url = "jdbc:mysql://localhost:3306/student?useSSL=false&serverTimezone=UTC";
         conn = DriverManager.getConnection(url, username, password);
-        System.out.println("Connected!!!");
     }
 
     public List<Student> getAllStudents() throws SQLException, ParseException {
@@ -44,7 +47,7 @@ public class StudentListViewDAO {
                 double htmlScore = resultSet.getDouble("htmlScore");
                 double cssScore = resultSet.getDouble("cssScore");
                 student = new SoftwareStudent(id, name, birthDate, javaScore, htmlScore, cssScore);
-            } else if ("Economics".equalsIgnoreCase(major)) {
+            } else {
                 double marketingScore = resultSet.getDouble("marketingScore");
                 double salesScore = resultSet.getDouble("salesScore");
                 student = new EconomicsStudent(id, name, birthDate, marketingScore, salesScore);
@@ -53,7 +56,6 @@ public class StudentListViewDAO {
                 studentList.add(student);
             }
         }
-        conn.close();
         statement.close();
         resultSet.close();
         return studentList;
