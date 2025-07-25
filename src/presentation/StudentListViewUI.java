@@ -15,63 +15,66 @@ import javax.swing.table.DefaultTableModel;
 import business.Student;
 
 public class StudentListViewUI extends JFrame {
-    private final JTextField searchTextField;
-    private final JButton addButton;
-    private final JButton reloadButton;
-    private final JTable studentTable;
-    private final DefaultTableModel tableModel;
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    private JTextField txtSearch;
+    private JButton btnAdd;
+    private JButton btnReload;
+    private JTable table;
+    private DefaultTableModel model;
+    private SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
 
     public StudentListViewUI() {
         super("Danh sách sinh viên");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(900, 400);
         setLocationRelativeTo(null);
+
         // Panel top
-        JPanel topPanel = new JPanel(new BorderLayout(5, 5));
-        searchTextField = new JTextField();
-        addButton = new JButton("Thêm");
-        reloadButton = new JButton("Load lại");
+        JPanel top = new JPanel(new BorderLayout(5, 5));
+        txtSearch = new JTextField();
+        btnAdd = new JButton("Thêm");
+        btnReload = new JButton("Load lại");
         JPanel buttonPanel = new JPanel(new BorderLayout(5, 5));
-        buttonPanel.add(addButton, BorderLayout.WEST);
-        buttonPanel.add(reloadButton, BorderLayout.EAST);
-        topPanel.add(searchTextField, BorderLayout.CENTER);
-        topPanel.add(buttonPanel, BorderLayout.EAST);
-        add(topPanel, BorderLayout.NORTH);
-        addButton.addActionListener(e -> {
-            StudentFormUI form = new StudentFormUI();
-            form.setVisible(true);
-        });
+        buttonPanel.add(btnAdd, BorderLayout.WEST);
+        buttonPanel.add(btnReload, BorderLayout.EAST);
+        top.add(txtSearch, BorderLayout.CENTER);
+        top.add(buttonPanel, BorderLayout.EAST);
+        add(top, BorderLayout.NORTH);
+
         // Table
-        String[] columns = { "STT", "ID", "Họ & tên", "Ngày sinh", "Chuyên ngành", "Điểm TB", "Xếp loại" };
-        tableModel = new DefaultTableModel(columns, 0) {
+        String[] cols = { "STT", "ID", "Họ & tên", "Ngày sinh", "Chuyên ngành", "Điểm TB", "Xếp loại" };
+        model = new DefaultTableModel(cols, 0) {
             @Override
-            public boolean isCellEditable(int row, int column) {
+            public boolean isCellEditable(int r, int c) {
                 return false;
             }
         };
-        studentTable = new JTable(tableModel);
-        add(new JScrollPane(studentTable), BorderLayout.CENTER);
+        table = new JTable(model);
+        add(new JScrollPane(table), BorderLayout.CENTER);
+
+        btnAdd.addActionListener(e -> {
+            StudentFormUI form = new StudentFormUI();
+            form.setVisible(true);
+        });
     }
 
-    public void showStudentList(List<Student> studentList) {
-        tableModel.setRowCount(0);
-        int orderNumber = 1;
-        for (Student student : studentList) {
+    public void showList(List<Student> students) {
+        model.setRowCount(0);
+        int stt = 1;
+        for (Student s : students) {
             Object[] row = {
-                    orderNumber++,
-                    student.getId(),
-                    student.getName(),
-                    dateFormat.format(student.getBirthDate()),
-                    student.getMajor(),
-                    String.format("%.2f", student.calculateGPA()),
-                    student.classifyAcademic()
+                    stt++,
+                    s.getId(),
+                    s.getName(),
+                    fmt.format(s.getBirthDate()),
+                    s.getMajor(),
+                    String.format("%.2f", s.calculateGPA()),
+                    s.classifyAcademic()
             };
-            tableModel.addRow(row);
+            model.addRow(row);
         }
     }
 
     public JButton getReloadButton() {
-        return reloadButton;
+        return btnReload;
     }
 }

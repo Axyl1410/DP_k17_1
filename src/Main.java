@@ -21,12 +21,14 @@ public class Main {
             });
             listViewUI.setVisible(true);
         } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (SQLException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (ParseException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
     }
 }

@@ -76,44 +76,58 @@ public class StudentFormUI extends JFrame {
         cancelButton.addActionListener(e -> dispose());
 
         saveButton.addActionListener(e -> {
-            try {
-                String id = idField.getText();
-                String name = nameField.getText();
-                Date birthDate = new SimpleDateFormat("dd/MM/yyyy").parse(birthDateField.getText());
-                String major = (String) majorBox.getSelectedItem();
-                Student student;
-                if ("Software".equalsIgnoreCase(major)) {
-                    double javaScore = Double.parseDouble(javaField.getText());
-                    double htmlScore = Double.parseDouble(htmlField.getText());
-                    double cssScore = Double.parseDouble(cssField.getText());
-                    student = new SoftwareStudent(id, name, birthDate, javaScore, htmlScore, cssScore);
-                } else {
-                    double marketingScore = Double.parseDouble(marketingField.getText());
-                    double salesScore = Double.parseDouble(salesField.getText());
-                    student = new EconomicsStudent(id, name, birthDate, marketingScore, salesScore);
-                }
-                AddStudentDAO dao = new AddStudentDAO();
-                AddStudentUseCase useCase = new AddStudentUseCase(dao);
-                useCase.execute(student);
-                JOptionPane.showMessageDialog(this, "Thêm thành công!");
-                // Reset all form fields
-                idField.setText("");
-                nameField.setText("");
-                birthDateField.setText("");
-                majorBox.setSelectedIndex(0);
-                javaField.setText("");
-                htmlField.setText("");
-                cssField.setText("");
-                marketingField.setText("");
-                salesField.setText("");
-                dispose();
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Lỗi: " + ex.getMessage());
+            Student student = buildStudentFromForm();
+            if (student != null) {
+                addStudent(student);
             }
         });
 
         add(panel);
+    }
+
+    public void addStudent(Student student) {
+        try {
+            AddStudentDAO addStudentDAO = new AddStudentDAO();
+            AddStudentUseCase addStudentUseCase = new AddStudentUseCase(addStudentDAO);
+            addStudentUseCase.execute(student);
+            JOptionPane.showMessageDialog(this, "Thêm thành công!");
+            // Reset all form fields
+            idField.setText("");
+            nameField.setText("");
+            birthDateField.setText("");
+            majorBox.setSelectedIndex(0);
+            javaField.setText("");
+            htmlField.setText("");
+            cssField.setText("");
+            marketingField.setText("");
+            salesField.setText("");
+            dispose();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi: " + ex.getMessage());
+        }
+    }
+
+    private Student buildStudentFromForm() {
+        try {
+            String id = idField.getText();
+            String name = nameField.getText();
+            Date birthDate = new SimpleDateFormat("dd/MM/yyyy").parse(birthDateField.getText());
+            String major = (String) majorBox.getSelectedItem();
+            if ("Software".equalsIgnoreCase(major)) {
+                double javaScore = Double.parseDouble(javaField.getText());
+                double htmlScore = Double.parseDouble(htmlField.getText());
+                double cssScore = Double.parseDouble(cssField.getText());
+                return new SoftwareStudent(id, name, birthDate, javaScore, htmlScore, cssScore);
+            } else {
+                double marketingScore = Double.parseDouble(marketingField.getText());
+                double salesScore = Double.parseDouble(salesField.getText());
+                return new EconomicsStudent(id, name, birthDate, marketingScore, salesScore);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi: " + ex.getMessage());
+            return null;
+        }
     }
 }

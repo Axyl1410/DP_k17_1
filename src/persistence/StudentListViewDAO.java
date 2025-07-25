@@ -26,7 +26,7 @@ public class StudentListViewDAO {
         conn = DriverManager.getConnection(url, username, password);
     }
 
-    public List<Student> getAllStudents() throws SQLException, ParseException {
+    public List<Student> getAll() throws SQLException, ParseException {
         List<Student> studentList = new ArrayList<Student>();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Statement statement = null;

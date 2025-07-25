@@ -8,8 +8,8 @@ import persistence.StudentListViewDAO;
 import presentation.StudentListViewUI;
 
 public class StudentListViewUseCase {
-    private final StudentListViewDAO listViewDAO;
-    private final StudentListViewUI listViewUI;
+    private StudentListViewDAO listViewDAO;
+    private StudentListViewUI listViewUI;
 
     public StudentListViewUseCase(StudentListViewDAO listViewDAO,
             StudentListViewUI listViewUI) {
@@ -20,8 +20,9 @@ public class StudentListViewUseCase {
 
     public void execute() throws SQLException, ParseException {
         List<Student> list = null;
-        list = listViewDAO.getAllStudents();
-        listViewUI.showStudentList(list);
+        list = listViewDAO.getAll();
+
+        listViewUI.showList(list);
     }
 
 }
