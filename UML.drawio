@@ -7,9 +7,6 @@
                 <mxCell id="zzaShAJUH8Mr4S-TDmGa-9" value="Business" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=80;height=40;fillColor=default;fillStyle=auto;gradientColor=none;fontColor=default;rounded=0;fontStyle=0;movable=0;resizable=0;rotatable=0;deletable=0;editable=0;connectable=0;" parent="1" vertex="1">
                     <mxGeometry x="-800" y="970" width="2690" height="580" as="geometry"/>
                 </mxCell>
-                <mxCell id="26" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-                    <mxGeometry x="-170" y="1360" width="330" height="130" as="geometry"/>
-                </mxCell>
                 <mxCell id="zzaShAJUH8Mr4S-TDmGa-8" value="Presentation" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=80;height=40;fontColor=default;rounded=0;movable=0;resizable=0;rotatable=0;deletable=0;editable=0;connectable=0;" parent="1" vertex="1">
                     <mxGeometry x="-800" y="320" width="2690" height="620" as="geometry"/>
                 </mxCell>
@@ -124,18 +121,6 @@
                         <mxPoint x="-460" y="1780" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="zzaShAJUH8Mr4S-TDmGa-49" value="RoomFactory" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;rounded=0;fillColor=default;strokeColor=default;" parent="1" vertex="1">
-                    <mxGeometry x="-100" y="1390" width="190" height="52" as="geometry"/>
-                </mxCell>
-                <mxCell id="zzaShAJUH8Mr4S-TDmGa-52" value="+ createRoom(RoomDTO): Room" style="text;strokeColor=none;fillColor=default;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=default;rounded=0;" parent="zzaShAJUH8Mr4S-TDmGa-49" vertex="1">
-                    <mxGeometry y="26" width="190" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="zzaShAJUH8Mr4S-TDmGa-53" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;fontColor=default;" parent="1" source="zzaShAJUH8Mr4S-TDmGa-49" target="zzaShAJUH8Mr4S-TDmGa-35" edge="1">
-                    <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="-490" y="1500" as="sourcePoint"/>
-                        <mxPoint x="-330" y="1500" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
                 <mxCell id="zzaShAJUH8Mr4S-TDmGa-54" value="&lt;i&gt;&amp;lt;&amp;lt;Abstract&amp;gt;&amp;gt;&lt;br&gt;RoomViewDTO&lt;/i&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fontColor=default;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="-500" y="1060" width="180" height="134" as="geometry"/>
                 </mxCell>
@@ -188,12 +173,6 @@
                     <mxGeometry width="160" relative="1" as="geometry">
                         <mxPoint x="-150" y="1270" as="sourcePoint"/>
                         <mxPoint x="10" y="1270" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="19" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;" parent="1" source="zzaShAJUH8Mr4S-TDmGa-58" target="zzaShAJUH8Mr4S-TDmGa-49" edge="1">
-                    <mxGeometry width="160" relative="1" as="geometry">
-                        <mxPoint x="-490" y="1150" as="sourcePoint"/>
-                        <mxPoint x="-330" y="1150" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="21" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;" parent="1" source="zzaShAJUH8Mr4S-TDmGa-58" target="zzaShAJUH8Mr4S-TDmGa-55" edge="1">
@@ -385,7 +364,7 @@
                 <mxCell id="83" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="81" vertex="1">
                     <mxGeometry y="52" width="380" height="8" as="geometry"/>
                 </mxCell>
-                <mxCell id="84" value="+ execute(): void&#10;+ convertToViewObject(List&lt;ViewRoomDTO&gt;: List&lt;ListViewObject&gt;)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="81" vertex="1">
+                <mxCell id="84" value="+ execute(): void&#10;+ convertToViewObject(List&lt;ViewRoomDTO&gt;): List&lt;ListViewObject&gt;)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="81" vertex="1">
                     <mxGeometry y="60" width="380" height="40" as="geometry"/>
                 </mxCell>
                 <mxCell id="85" value="" style="endArrow=open;endFill=1;endSize=12;html=1;rounded=0;sourcePerimeterSpacing=8;targetPerimeterSpacing=8;curved=1;" parent="1" source="81" target="27" edge="1">

@@ -1,10 +1,10 @@
 package vn.giadinh.phonghoc.business.factory;
 
 import vn.giadinh.phonghoc.dto.RoomDTO;
-import vn.giadinh.phonghoc.model.ComputerLab;
-import vn.giadinh.phonghoc.model.Laboratory;
-import vn.giadinh.phonghoc.model.LectureHall;
-import vn.giadinh.phonghoc.model.Room;
+import vn.giadinh.phonghoc.entity.ComputerLab;
+import vn.giadinh.phonghoc.entity.Laboratory;
+import vn.giadinh.phonghoc.entity.LectureHall;
+import vn.giadinh.phonghoc.entity.Room;
 
 public class RoomFactory {
     public static Room createRoom(RoomDTO roomDTO) {

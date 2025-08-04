@@ -1,4 +1,4 @@
-package vn.giadinh.phonghoc.model;
+package vn.giadinh.phonghoc.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

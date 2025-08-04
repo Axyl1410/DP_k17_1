@@ -3,7 +3,7 @@ package vn.giadinh.phonghoc.business.usecase;
 import vn.giadinh.phonghoc.business.factory.RoomFactory;
 import vn.giadinh.phonghoc.dto.RoomDTO;
 import vn.giadinh.phonghoc.dto.ViewRoomDTO;
-import vn.giadinh.phonghoc.model.Room;
+import vn.giadinh.phonghoc.entity.Room;
 import vn.giadinh.phonghoc.persistence.dao.ViewRoomDAO;
 
 import java.sql.Date;
@@ -12,12 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewRoomUsecase {
-    private static ViewRoomDAO viewRoomDAO;
-
     public static List<ViewRoomDTO> execute() throws SQLException {
         List<RoomDTO> roomDTOList = null;
         List<Room> roomList = null;
-        roomDTOList = viewRoomDAO.getAll();
+        roomDTOList = ViewRoomDAO.getAll();
         roomList = convertToBusinessObjects(roomDTOList);
         return convertToViewRoomDTO(roomList);
     }
@@ -39,7 +37,7 @@ public class ViewRoomUsecase {
             viewRoomDTO.setBuildingBlock(room.getBuildingBlock());
             viewRoomDTO.setArea(room.getArea());
             viewRoomDTO.setNumLightBulbs(room.getNumLightBulbs());
-            viewRoomDTO.setStartDateOfOperation((Date) room.getStartDateOfOperation());
+            viewRoomDTO.setStartDateOfOperation(new Date(room.getStartDateOfOperation().getTime()));
             viewRoomDTO.setSufficientLight(room.checkSufficientLight());
             viewRoomDTO.setStandard(room.meetsStandard());
             viewRoomDTOList.add(viewRoomDTO);

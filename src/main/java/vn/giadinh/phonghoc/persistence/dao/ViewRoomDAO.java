@@ -17,11 +17,11 @@ public class ViewRoomDAO implements ViewRoomGateway {
     }
 
     @Override
-    public List<RoomDTO> getAll() throws SQLException {
+    public static List<RoomDTO> getAll() throws SQLException {
         List<RoomDTO> roomsDTO = new ArrayList<>();
         String sql = "SELECT * FROM rooms ORDER BY room_id";
         try (PreparedStatement stmt = connection.prepareStatement(sql);
-                ResultSet rs = stmt.executeQuery()) {
+             ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 RoomDTO dto = new RoomDTO();
                 dto.setRoomId(rs.getString("room_id"));

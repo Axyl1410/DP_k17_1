@@ -1,4 +1,4 @@
-package vn.giadinh.phonghoc.model;
+package vn.giadinh.phonghoc.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,11 +9,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ComputerLab extends Room {
-    public int numComputers;
+public class Laboratory extends Room {
+    public String specialization;
+    public int capacity;
+    public boolean hasSink;
 
     @Override
     public boolean meetsStandard() {
-        return numComputers >= area / 1.5;
+        return hasSink;
     }
 }
