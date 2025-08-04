@@ -10,24 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewRoomController {
-    private static ViewRoomModel viewRoomModel;
+    private static ViewRoomModel viewRoomModel = new ViewRoomModel();
 
     public static void execute() throws SQLException {
         List<ViewRoomDTO> viewRoomDTOS = ViewRoomUsecase.execute();
-
-        // Initialize viewRoomModel if it's null
-        if (viewRoomModel == null) {
-            viewRoomModel = new ViewRoomModel();
-        }
-
         viewRoomModel.listViewDTOS = convertToViewObject(viewRoomDTOS);
-
-        System.out.println("=== ViewRoomController - ListViewDTO List ===");
-        for (ListViewDTO dto : viewRoomModel.listViewDTOS) {
-            System.out.println("ListViewDTO: " + dto.getRoomId() + " - " + dto.getBuildingBlock() + " - "
-                    + dto.getArea() + " - " + dto.getIsStandard());
-        }
-
         viewRoomModel.notifySubscribers();
     }
 
@@ -54,16 +41,4 @@ public class ViewRoomController {
         return listViewDTOS;
     }
 
-    // Main method để test
-    public static void main(String[] args) {
-        System.out.println("=== Testing ViewRoomController ===");
-        try {
-            execute();
-            System.out.println("=== ViewRoomController Test Completed ===");
-            System.out.println("Total ListViewDTO: " + (viewRoomModel != null ? viewRoomModel.listViewDTOS.size() : 0));
-        } catch (SQLException e) {
-            System.err.println("Error: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
 }
