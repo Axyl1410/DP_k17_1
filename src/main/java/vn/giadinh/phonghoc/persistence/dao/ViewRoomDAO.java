@@ -16,24 +16,12 @@ public class ViewRoomDAO implements ViewRoomGateway {
     public ViewRoomDAO() throws SQLException {
     }
 
-    // For test connection only
-    public static void main(String[] args) {
-        try {
-            ViewRoomDAO dao = new ViewRoomDAO();
-            List<RoomDTO> roomDTOS = dao.getAll();
-            dao.PrintAll(roomDTOS);
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public List<RoomDTO> getAll() throws SQLException {
         List<RoomDTO> roomsDTO = new ArrayList<>();
         String sql = "SELECT * FROM rooms ORDER BY room_id";
         try (PreparedStatement stmt = connection.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+                ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 RoomDTO dto = new RoomDTO();
                 dto.setRoomId(rs.getString("room_id"));
@@ -51,12 +39,5 @@ public class ViewRoomDAO implements ViewRoomGateway {
         }
         connection.close();
         return roomsDTO;
-    }
-
-    // For test connection only
-    private void PrintAll(List<RoomDTO> roomDTOS) {
-        for (RoomDTO roomDTO : roomDTOS) {
-            System.out.println(roomDTO);
-        }
     }
 }
