@@ -3,15 +3,15 @@ package vn.giadinh.phonghoc.presentation.observer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Publisher {
-    private final List<Subscriber> subscribers = new ArrayList<>();
+public abstract class Publisher {
+    private List<Subscriber> subscribers = new ArrayList<>();
 
-    public void addSubscriber(Subscriber sub) {
-        subscribers.add(sub);
+    public void addSubscriber(Subscriber subscriber) {
+        subscribers.add(subscriber);
     }
 
-    public void removeSubscriber(Subscriber sub) {
-        subscribers.remove(sub);
+    public void removeSubscriber(Subscriber subscriber) {
+        subscribers.remove(subscriber);
     }
 
     public void notifySubscribers() {

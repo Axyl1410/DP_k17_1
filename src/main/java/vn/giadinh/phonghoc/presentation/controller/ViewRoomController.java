@@ -13,12 +13,29 @@ public class ViewRoomController {
     private static ViewRoomModel viewRoomModel;
 
     public static void execute() throws SQLException {
-        List<ViewRoomDTO> viewRoomDTOS = null;
-        List<ListViewDTO> items = null;
-        viewRoomDTOS = ViewRoomUsecase.execute();
-        items = convertToViewObject(viewRoomDTOS);
-        viewRoomModel.listViewDTOS = items;
+        List<ViewRoomDTO> viewRoomDTOS = ViewRoomUsecase.execute();
+
+        // Initialize viewRoomModel if it's null
+        if (viewRoomModel == null) {
+            viewRoomModel = new ViewRoomModel();
+        }
+
+        viewRoomModel.listViewDTOS = convertToViewObject(viewRoomDTOS);
+
+        System.out.println("=== ViewRoomController - ListViewDTO List ===");
+        for (ListViewDTO dto : viewRoomModel.listViewDTOS) {
+            System.out.println("ListViewDTO: " + dto.getRoomId() + " - " + dto.getBuildingBlock() + " - "
+                    + dto.getArea() + " - " + dto.getIsStandard());
+        }
+
         viewRoomModel.notifySubscribers();
+    }
+
+    public static ViewRoomModel getViewRoomModel() {
+        if (viewRoomModel == null) {
+            viewRoomModel = new ViewRoomModel();
+        }
+        return viewRoomModel;
     }
 
     private static List<ListViewDTO> convertToViewObject(List<ViewRoomDTO> viewRoomDTOs) {
@@ -35,5 +52,18 @@ public class ViewRoomController {
             listViewDTOS.add(item);
         }
         return listViewDTOS;
+    }
+
+    // Main method để test
+    public static void main(String[] args) {
+        System.out.println("=== Testing ViewRoomController ===");
+        try {
+            execute();
+            System.out.println("=== ViewRoomController Test Completed ===");
+            System.out.println("Total ListViewDTO: " + (viewRoomModel != null ? viewRoomModel.listViewDTOS.size() : 0));
+        } catch (SQLException e) {
+            System.err.println("Error: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

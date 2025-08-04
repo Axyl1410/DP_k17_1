@@ -1,4 +1,4 @@
-package vn.giadinh.phonghoc;
+package vn.giadinh.phonghoc.presentation.view;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

@@ -11,13 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewRoomDAO implements ViewRoomGateway {
-    private final Connection connection = (Connection) InitializeDAO.GetConnection();
+    private final Connection connection;
 
     public ViewRoomDAO() throws SQLException {
+        this.connection = (Connection) InitializeDAO.GetConnection();
     }
 
     @Override
-    public static List<RoomDTO> getAll() throws SQLException {
+    public List<RoomDTO> getAll() throws SQLException {
         List<RoomDTO> roomsDTO = new ArrayList<>();
         String sql = "SELECT * FROM rooms ORDER BY room_id";
         try (PreparedStatement stmt = connection.prepareStatement(sql);
@@ -37,7 +38,6 @@ public class ViewRoomDAO implements ViewRoomGateway {
                 roomsDTO.add(dto);
             }
         }
-        connection.close();
         return roomsDTO;
     }
 }
