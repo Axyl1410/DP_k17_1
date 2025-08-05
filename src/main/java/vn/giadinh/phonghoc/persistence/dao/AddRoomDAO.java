@@ -4,9 +4,9 @@ import vn.giadinh.phonghoc.dto.RoomDTO;
 import vn.giadinh.phonghoc.persistence.gateway.AddRoomGateway;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Date;
 
 public class AddRoomDAO implements AddRoomGateway {
     private final Connection connection;
@@ -22,7 +22,6 @@ public class AddRoomDAO implements AddRoomGateway {
                     room_id, room_type, building_block, area_sqm, num_light_bulbs, start_operation_date,
                     has_projector, num_computers, specialization, capacity, has_sink
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""";
-
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, room.roomId);
             stmt.setString(2, room.roomType);
@@ -35,7 +34,6 @@ public class AddRoomDAO implements AddRoomGateway {
             stmt.setString(9, room.specialization);
             stmt.setObject(10, room.capacity);
             stmt.setObject(11, room.hasSink);
-
             stmt.executeUpdate();
         }
     }

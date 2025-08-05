@@ -95,7 +95,7 @@ public class AddRoomView implements Initializable, Subscriber {
         // Clear button handler
         clearButton.setOnAction(event -> clearForm());
         // Cancel button handler
-        cancelButton.setOnAction(event -> handleCancel());
+        cancelButton.setOnAction(event -> handleBack());
         // Back button handler
         backButton.setOnAction(event -> handleBack());
     }
@@ -188,12 +188,6 @@ public class AddRoomView implements Initializable, Subscriber {
         hideAllSpecificSections();
     }
 
-    private void handleCancel() {
-        // Close the current form window
-        javafx.stage.Stage stage = (javafx.stage.Stage) cancelButton.getScene().getWindow();
-        stage.close();
-    }
-
     private void handleBack() {
         // Close the current form window
         javafx.stage.Stage stage = (javafx.stage.Stage) backButton.getScene().getWindow();
@@ -210,6 +204,5 @@ public class AddRoomView implements Initializable, Subscriber {
 
     @Override
     public void update() {
-        // Handle updates from observer pattern if needed
     }
 }

@@ -18,7 +18,6 @@ public class ListRoomView implements Initializable, Subscriber {
     // --- Toast ---
     @FXML
     public Label toast;
-    FormNavigator navigator = new FormNavigator();
     // --- Filter Components ---
     @FXML
     private TextField searchField;
