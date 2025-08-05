@@ -13,12 +13,12 @@ public class RoomDTO {
     public String roomId;
     public String roomType;
     public String buildingBlock;
-    public double area;
-    public int numLightBulbs;
+    public Double area;
+    public Integer numLightBulbs;
     public Date startDateOfOperation;
     public Boolean hasProjector;
-    public int numComputers;
+    public Integer numComputers;
     public String specialization;
-    public int capacity;
+    public Integer capacity;
     public Boolean hasSink;
 }

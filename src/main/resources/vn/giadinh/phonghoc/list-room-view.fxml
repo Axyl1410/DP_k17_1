@@ -22,47 +22,38 @@
 
         <HBox alignment="CENTER_LEFT" spacing="15.0">
             <VBox spacing="5.0">
-                <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;"
-                       text="Từ khóa:"/>
-                <TextField fx:id="searchField" prefHeight="35.0" prefWidth="200.0"
-                           promptText="Nhập từ khóa tìm kiếm..."
+                <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;" text="Từ khóa:"/>
+                <TextField fx:id="searchField" prefHeight="35.0" prefWidth="200.0" promptText="Nhập từ khóa tìm kiếm..."
                            style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #bdc3c7; -fx-border-width: 1; -fx-padding: 8;"/>
             </VBox>
 
             <VBox spacing="5.0">
-                <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;"
-                       text="Dãy nhà:"/>
+                <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;" text="Dãy nhà:"/>
                 <ComboBox fx:id="buildingFilter" prefHeight="35.0" prefWidth="150.0" promptText="Chọn dãy nhà"
                           style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #bdc3c7; -fx-border-width: 1;"/>
             </VBox>
 
             <VBox spacing="5.0">
-                <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;"
-                       text="Trạng thái:"/>
-                <ComboBox fx:id="statusFilter" prefHeight="35.0" prefWidth="150.0"
-                          promptText="Chọn trạng thái"
+                <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;" text="Trạng thái:"/>
+                <ComboBox fx:id="statusFilter" prefHeight="35.0" prefWidth="150.0" promptText="Chọn trạng thái"
                           style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #bdc3c7; -fx-border-width: 1;"/>
             </VBox>
 
             <VBox spacing="5.0">
-                <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;"
-                       text="Ánh sáng:"/>
-                <ComboBox fx:id="lightFilter" prefHeight="35.0" prefWidth="120.0"
-                          promptText="Chọn ánh sáng"
+                <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;" text="Ánh sáng:"/>
+                <ComboBox fx:id="lightFilter" prefHeight="35.0" prefWidth="120.0" promptText="Chọn ánh sáng"
                           style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #bdc3c7; -fx-border-width: 1;"/>
             </VBox>
 
             <VBox spacing="5.0">
-                <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;"
-                       text="Tìm kiếm:"/>
+                <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;" text="Tìm kiếm:"/>
                 <Button fx:id="searchButton" prefHeight="35.0" prefWidth="100.0"
                         style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 8 16;"
                         text="Tìm kiếm"/>
             </VBox>
 
             <VBox spacing="5.0">
-                <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;"
-                       text="Làm mới:"/>
+                <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;" text="Làm mới:"/>
                 <Button fx:id="refreshButton" prefHeight="35.0" prefWidth="100.0"
                         style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 8 16;"
                         text="Làm mới"/>
@@ -81,15 +72,13 @@
 
             <VBox spacing="12.0">
                 <VBox spacing="5.0">
-                    <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;"
-                           text="Mã phòng:"/>
+                    <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;" text="Mã phòng:"/>
                     <TextField fx:id="idField" editable="false" prefHeight="35.0"
                                style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #bdc3c7; -fx-border-width: 1; -fx-padding: 8;"/>
                 </VBox>
 
                 <VBox spacing="5.0">
-                    <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;"
-                           text="Dãy nhà:"/>
+                    <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;" text="Dãy nhà:"/>
                     <TextField fx:id="buildingBlockField" prefHeight="35.0"
                                style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #bdc3c7; -fx-border-width: 1; -fx-padding: 8;"/>
                 </VBox>
@@ -160,16 +149,13 @@
                        style="-fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #bdc3c7; -fx-border-width: 1;"
                        VBox.vgrow="ALWAYS">
                 <columns>
-                    <TableColumn fx:id="roomId" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;"
-                                 text="Mã phòng"/>
+                    <TableColumn fx:id="roomId" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Mã phòng"/>
                     <TableColumn fx:id="buildingBlock" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;"
                                  text="Dãy nhà"/>
-                    <TableColumn fx:id="area" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;"
-                                 text="Diện tích"/>
+                    <TableColumn fx:id="area" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Diện tích"/>
                     <TableColumn fx:id="numLightBulbs" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;"
                                  text="Số bóng đèn"/>
-                    <TableColumn fx:id="startDateOfOperation"
-                                 style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;"
+                    <TableColumn fx:id="startDateOfOperation" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;"
                                  text="Ngày hoạt động"/>
                     <TableColumn fx:id="sufficientLight" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;"
                                  text="Ánh sáng"/>
@@ -181,5 +167,7 @@
             </TableView>
         </VBox>
     </HBox>
-
+    <HBox>
+        <Label fx:id="toast" style="-fx-padding: 15; -fx-text-fill: #00a6f4;">Test</Label>
+    </HBox>
 </VBox>
