@@ -2,31 +2,23 @@ package vn.giadinh.phonghoc.presentation.view;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 import vn.giadinh.phonghoc.dto.ListViewDTO;
 import vn.giadinh.phonghoc.presentation.controller.ViewRoomController;
 import vn.giadinh.phonghoc.presentation.model.ViewRoomModel;
 import vn.giadinh.phonghoc.presentation.observer.Subscriber;
 
-import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ResourceBundle;
 
 public class ListRoomView implements Initializable, Subscriber {
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     // --- Toast ---
+    @FXML
     public Label toast;
-    public Button logoutButton;
+    FormNavigator navigator = new FormNavigator();
     // --- Filter Components ---
     @FXML
     private TextField searchField;
@@ -50,11 +42,11 @@ public class ListRoomView implements Initializable, Subscriber {
     @FXML
     private TextField numLightBulbsField;
     @FXML
-    private DatePicker startDatePicker; // Changed from TextField to DatePicker
+    private TextField startDatePicker; // Changed from TextField to DatePicker
     @FXML
-    private ComboBox<String> lightField; // Renamed from genderField
+    private TextField lightField; // Renamed from genderField
     @FXML
-    private ComboBox<String> statusField;
+    private TextField statusField;
     @FXML
     private Button addButton;
     @FXML
@@ -80,6 +72,7 @@ public class ListRoomView implements Initializable, Subscriber {
     private TableColumn<ListViewDTO, String> isStandard;
     @FXML
     private TableColumn<ListViewDTO, String> actionColumn;
+    @FXML
     private ViewRoomModel viewModel;
 
     @Override
@@ -171,6 +164,7 @@ public class ListRoomView implements Initializable, Subscriber {
     private void searchRooms() {
         // Implementation for search functionality
         System.out.println("Searching rooms...");
+        toast.setText("Searching rooms...");
     }
 
     private void refreshRooms() {
@@ -185,22 +179,7 @@ public class ListRoomView implements Initializable, Subscriber {
     }
 
     private void addRoom() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/vn/giadinh/phonghoc/add-room-view.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Thêm phòng học mới");
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi");
-            alert.setHeaderText("Không thể mở cửa sổ thêm phòng");
-            alert.setContentText("Đã xảy ra lỗi: " + e.getMessage());
-            alert.showAndWait();
-        }
-
+        FormNavigator.openFormInNewWindow("/vn/giadinh/phonghoc/add-room-view.fxml", "Thêm phòng học mới");
     }
 
     private void updateRoom() {
@@ -213,9 +192,9 @@ public class ListRoomView implements Initializable, Subscriber {
         buildingBlockField.clear();
         areaField.clear();
         numLightBulbsField.clear();
-        startDatePicker.setValue(null); // Clear DatePicker
-        lightField.setValue(null); // Use updated name
-        statusField.setValue(null);
+        startDatePicker.clear(); // Clear DatePicker
+        lightField.clear(); // Use updated name
+        statusField.clear();
     }
 
     private void editRoom(ListViewDTO room) {
@@ -240,20 +219,9 @@ public class ListRoomView implements Initializable, Subscriber {
         buildingBlockField.setText(room.getBuildingBlock());
         areaField.setText(room.getArea());
         numLightBulbsField.setText(room.getNumLightBulbs());
-        lightField.setValue(room.getSufficientLight());
-        statusField.setValue(room.getIsStandard());
-        // Safely parse the date string into the DatePicker
-        try {
-            if (room.getStartDateOfOperation() != null && !room.getStartDateOfOperation().isEmpty()) {
-                LocalDate date = LocalDate.parse(room.getStartDateOfOperation(), dateFormatter);
-                startDatePicker.setValue(date);
-            } else {
-                startDatePicker.setValue(null);
-            }
-        } catch (DateTimeParseException e) {
-            System.err.println("Could not parse date: " + room.getStartDateOfOperation());
-            startDatePicker.setValue(null); // Set to null if parsing fails
-        }
+        lightField.setText(room.getSufficientLight());
+        statusField.setText(room.getIsStandard());
+        startDatePicker.setText(room.getStartDateOfOperation());
     }
 
     @Override

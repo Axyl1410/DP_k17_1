@@ -12,7 +12,14 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class AddRoomView implements Initializable, Subscriber {
-
+    // Room type constants
+    private static final String LECTURE_HALL = "LECTURE_HALL";
+    private static final String COMPUTER_LAB = "COMPUTER_LAB";
+    private static final String LABORATORY = "LABORATORY";
+    // Specialization options for laboratory
+    private static final List<String> SPECIALIZATIONS = Arrays.asList(
+            "Chemistry", "Physics", "Biology", "Computer Science",
+            "Environmental Science", "Mathematics", "Engineering");
     // Basic Information Fields
     @FXML
     private TextField roomIdField;
@@ -26,19 +33,16 @@ public class AddRoomView implements Initializable, Subscriber {
     private TextField numLightBulbsField;
     @FXML
     private DatePicker startDatePicker;
-
     // Lecture Hall Fields
     @FXML
     private VBox lectureHallSection;
     @FXML
     private CheckBox hasProjectorCheckBox;
-
     // Computer Lab Fields
     @FXML
     private VBox computerLabSection;
     @FXML
     private TextField numComputersField;
-
     // Laboratory Fields
     @FXML
     private VBox laboratorySection;
@@ -48,7 +52,6 @@ public class AddRoomView implements Initializable, Subscriber {
     private TextField capacityField;
     @FXML
     private CheckBox hasSinkCheckBox;
-
     // Action Buttons
     @FXML
     private Button saveButton;
@@ -58,16 +61,6 @@ public class AddRoomView implements Initializable, Subscriber {
     private Button cancelButton;
     @FXML
     private Button backButton;
-
-    // Room type constants
-    private static final String LECTURE_HALL = "LECTURE_HALL";
-    private static final String COMPUTER_LAB = "COMPUTER_LAB";
-    private static final String LABORATORY = "LABORATORY";
-
-    // Specialization options for laboratory
-    private static final List<String> SPECIALIZATIONS = Arrays.asList(
-            "Chemistry", "Physics", "Biology", "Computer Science",
-            "Environmental Science", "Mathematics", "Engineering");
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -83,7 +76,6 @@ public class AddRoomView implements Initializable, Subscriber {
                 "LECTURE_HALL - Phòng lý thuyết",
                 "COMPUTER_LAB - Phòng máy tính",
                 "LABORATORY - Phòng thí nghiệm");
-
         // Add listener for room type selection
         roomTypeComboBox.setOnAction(event -> {
             String selectedItem = roomTypeComboBox.getValue();
@@ -100,13 +92,10 @@ public class AddRoomView implements Initializable, Subscriber {
     private void setupEventHandlers() {
         // Save button handler
         saveButton.setOnAction(event -> handleSaveRoom());
-
         // Clear button handler
         clearButton.setOnAction(event -> clearForm());
-
         // Cancel button handler
         cancelButton.setOnAction(event -> handleCancel());
-
         // Back button handler
         backButton.setOnAction(event -> handleBack());
     }
@@ -114,7 +103,6 @@ public class AddRoomView implements Initializable, Subscriber {
     private void handleRoomTypeSelection(String selectedItem) {
         // Hide all specific sections first
         hideAllSpecificSections();
-
         // Show appropriate section based on selection
         if (selectedItem.contains(LECTURE_HALL)) {
             lectureHallSection.setVisible(true);
@@ -143,7 +131,6 @@ public class AddRoomView implements Initializable, Subscriber {
             showAlert("Lỗi", "Vui lòng điền đầy đủ thông tin cơ bản!");
             return;
         }
-
         // Validate specific fields based on room type
         String selectedRoomType = roomTypeComboBox.getValue();
         if (selectedRoomType != null) {
@@ -161,7 +148,6 @@ public class AddRoomView implements Initializable, Subscriber {
                 }
             }
         }
-
         // TODO: Implement save logic
         showAlert("Thành công", "Phòng học đã được lưu thành công!");
     }
@@ -192,14 +178,12 @@ public class AddRoomView implements Initializable, Subscriber {
         areaField.clear();
         numLightBulbsField.clear();
         startDatePicker.setValue(null);
-
         // Clear specific fields
         hasProjectorCheckBox.setSelected(false);
         numComputersField.clear();
         specializationComboBox.setValue(null);
         capacityField.clear();
         hasSinkCheckBox.setSelected(false);
-
         // Hide all specific sections
         hideAllSpecificSections();
     }

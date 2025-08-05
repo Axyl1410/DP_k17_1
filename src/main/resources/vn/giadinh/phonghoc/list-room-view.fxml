@@ -10,9 +10,6 @@
     <HBox alignment="CENTER" spacing="10.0" style="-fx-background-color: #2c3e50; -fx-padding: 15;">
         <Label style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: white;" text="Quản lý phòng học"/>
         <Region HBox.hgrow="ALWAYS"/>
-        <Button fx:id="logoutButton" prefHeight="35.0" prefWidth="100.0"
-                style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 8 16;"
-                text="Đăng xuất"/>
     </HBox>
 
 
@@ -28,28 +25,28 @@
             </VBox>
 
             <VBox spacing="5.0">
+                <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;" text="Tìm kiếm:"/>
+                <Button fx:id="searchButton" prefHeight="35.0" prefWidth="100.0"
+                        style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 8 16;"
+                        text="Tìm kiếm"/>
+            </VBox>
+
+            <VBox spacing="5.0">
                 <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;" text="Dãy nhà:"/>
                 <ComboBox fx:id="buildingFilter" prefHeight="35.0" prefWidth="150.0" promptText="Chọn dãy nhà"
                           style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #bdc3c7; -fx-border-width: 1;"/>
             </VBox>
 
             <VBox spacing="5.0">
-                <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;" text="Trạng thái:"/>
+                <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;" text="Đủ tiêu chuẩn:"/>
                 <ComboBox fx:id="statusFilter" prefHeight="35.0" prefWidth="150.0" promptText="Chọn trạng thái"
                           style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #bdc3c7; -fx-border-width: 1;"/>
             </VBox>
 
             <VBox spacing="5.0">
-                <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;" text="Ánh sáng:"/>
+                <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;" text="Đủ ánh sáng:"/>
                 <ComboBox fx:id="lightFilter" prefHeight="35.0" prefWidth="120.0" promptText="Chọn ánh sáng"
                           style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #bdc3c7; -fx-border-width: 1;"/>
-            </VBox>
-
-            <VBox spacing="5.0">
-                <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;" text="Tìm kiếm:"/>
-                <Button fx:id="searchButton" prefHeight="35.0" prefWidth="100.0"
-                        style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 8 16;"
-                        text="Tìm kiếm"/>
             </VBox>
 
             <VBox spacing="5.0">
@@ -73,51 +70,52 @@
             <VBox spacing="12.0">
                 <VBox spacing="5.0">
                     <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;" text="Mã phòng:"/>
-                    <TextField fx:id="idField" editable="false" prefHeight="35.0"
+                    <TextField fx:id="idField" disable="true" editable="false" prefHeight="35.0"
                                style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #bdc3c7; -fx-border-width: 1; -fx-padding: 8;"/>
                 </VBox>
 
                 <VBox spacing="5.0">
                     <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;" text="Dãy nhà:"/>
-                    <TextField fx:id="buildingBlockField" prefHeight="35.0"
+                    <TextField fx:id="buildingBlockField" disable="true" prefHeight="35.0"
                                style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #bdc3c7; -fx-border-width: 1; -fx-padding: 8;"/>
                 </VBox>
 
                 <VBox spacing="5.0">
                     <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;"
                            text="Diện tích (m²):"/>
-                    <TextField fx:id="areaField" prefHeight="35.0"
+                    <TextField fx:id="areaField" disable="true" prefHeight="35.0"
                                style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #bdc3c7; -fx-border-width: 1; -fx-padding: 8;"/>
                 </VBox>
 
                 <VBox spacing="5.0">
                     <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;"
                            text="Số bóng đèn:"/>
-                    <TextField fx:id="numLightBulbsField" prefHeight="35.0"
+                    <TextField fx:id="numLightBulbsField" disable="true" prefHeight="35.0"
                                style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #bdc3c7; -fx-border-width: 1; -fx-padding: 8;"/>
                 </VBox>
 
                 <VBox spacing="5.0">
                     <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;"
                            text="Ngày hoạt động:"/>
-                    <DatePicker fx:id="startDatePicker" prefHeight="35.0" prefWidth="400.0"
-                                promptText="Chọn ngày hoạt động"
-                                style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #bdc3c7; -fx-border-width: 1; -fx-padding: 8;"/>
+                    <TextField fx:id="startDatePicker" disable="true" prefHeight="35.0"
+                               style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #bdc3c7; -fx-border-width: 1; -fx-padding: 8;"/>
+
                 </VBox>
 
                 <HBox spacing="10.0">
                     <VBox spacing="5.0" HBox.hgrow="ALWAYS">
                         <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;"
                                text="Ánh sáng:"/>
-                        <ComboBox fx:id="lightField" prefHeight="35.0" prefWidth="200.0" promptText="Chọn ánh sáng"
-                                  style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #bdc3c7; -fx-border-width: 1;"/>
+                        <TextField fx:id="lightField" disable="true" prefHeight="35.0"
+                                   style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #bdc3c7; -fx-border-width: 1; -fx-padding: 8;"/>
                     </VBox>
 
                     <VBox spacing="5.0" HBox.hgrow="ALWAYS">
                         <Label style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #34495e;"
-                               text="Trạng thái:"/>
-                        <ComboBox fx:id="statusField" prefHeight="35.0" prefWidth="200.0" promptText="Chọn trạng thái"
-                                  style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #bdc3c7; -fx-border-width: 1;"/>
+                               text="Đủ tiêu chuẩn"/>
+                        <TextField fx:id="statusField" disable="true" prefHeight="35.0"
+                                   style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #bdc3c7; -fx-border-width: 1; -fx-padding: 8;"/>
+
                     </VBox>
                 </HBox>
 
@@ -155,13 +153,13 @@
                     <TableColumn fx:id="area" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Diện tích"/>
                     <TableColumn fx:id="numLightBulbs" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;"
                                  text="Số bóng đèn"/>
-                    <TableColumn fx:id="startDateOfOperation" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;"
-                                 text="Ngày hoạt động"/>
-                    <TableColumn fx:id="sufficientLight" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;"
-                                 text="Ánh sáng"/>
-                    <TableColumn fx:id="isStandard" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;"
-                                 text="Trạng thái"/>
-                    <TableColumn fx:id="actionColumn" prefWidth="137.5999755859375"
+                    <TableColumn fx:id="startDateOfOperation" prefWidth="104.0"
+                                 style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Ngày hoạt động"/>
+                    <TableColumn fx:id="sufficientLight" prefWidth="88.99996948242188"
+                                 style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Đủ ánh sáng"/>
+                    <TableColumn fx:id="isStandard" prefWidth="98.199951171875"
+                                 style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Đủ tiêu chuẩn"/>
+                    <TableColumn fx:id="actionColumn" prefWidth="88.0"
                                  style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Thao tác"/>
                 </columns>
             </TableView>

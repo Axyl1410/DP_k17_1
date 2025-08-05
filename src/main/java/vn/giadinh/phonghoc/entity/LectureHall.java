@@ -14,6 +14,6 @@ public class LectureHall extends Room {
 
     @Override
     public boolean meetsStandard() {
-        return hasProjector;
+        return hasProjector && checkSufficientLight();
     }
 }

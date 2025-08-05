@@ -16,6 +16,6 @@ public class Laboratory extends Room {
 
     @Override
     public boolean meetsStandard() {
-        return hasSink;
+        return hasSink && checkSufficientLight();
     }
 }

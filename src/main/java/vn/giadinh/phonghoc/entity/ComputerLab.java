@@ -14,6 +14,6 @@ public class ComputerLab extends Room {
 
     @Override
     public boolean meetsStandard() {
-        return numComputers >= area / 1.5;
+        return numComputers >= area / 1.5 && checkSufficientLight();
     }
 }
