@@ -4,10 +4,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import vn.giadinh.phonghoc.dto.RoomDTO;
+import vn.giadinh.phonghoc.dto.StatusDTO;
+import vn.giadinh.phonghoc.presentation.controller.addRoomController;
+import vn.giadinh.phonghoc.presentation.model.AddRoomModel;
 import vn.giadinh.phonghoc.presentation.observer.Subscriber;
+import vn.giadinh.phonghoc.shared.enums.StatusCode;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -20,6 +28,8 @@ public class AddRoomView implements Initializable, Subscriber {
     private static final List<String> SPECIALIZATIONS = Arrays.asList(
             "Chemistry", "Physics", "Biology", "Computer Science",
             "Environmental Science", "Mathematics", "Engineering");
+
+    private static final AddRoomModel model = new AddRoomModel();
     // Basic Information Fields
     @FXML
     private TextField roomIdField;
@@ -68,6 +78,8 @@ public class AddRoomView implements Initializable, Subscriber {
         setupSpecializationComboBox();
         setupEventHandlers();
         hideAllSpecificSections();
+
+
     }
 
     private void setupRoomTypeComboBox() {
@@ -148,8 +160,19 @@ public class AddRoomView implements Initializable, Subscriber {
                 }
             }
         }
-        // TODO: Implement save logic
-        showAlert("Thành công", "Phòng học đã được lưu thành công!");
+        
+        RoomDTO roomDTO = createRoomDTO();
+
+        addRoomController.execute(roomDTO);
+
+        StatusDTO status = model.statusDTO;
+
+        if (status.getStatus() == StatusCode.SUCCESS) {
+            showAlert("Thành công", "Phòng học đã được lưu thành công!");
+            clearForm();
+        } else {
+            showAlert("Lỗi", "Không thể lưu phòng học: " + status.getMessage());
+        }
     }
 
     private boolean validateBasicFields() {
@@ -194,6 +217,42 @@ public class AddRoomView implements Initializable, Subscriber {
         stage.close();
     }
 
+    private RoomDTO createRoomDTO() {
+        RoomDTO roomDTO = new RoomDTO();
+
+        // Basic information
+        roomDTO.setRoomId(roomIdField.getText().trim());
+        roomDTO.setBuildingBlock(buildingBlockField.getText().trim());
+        roomDTO.setArea(Double.parseDouble(areaField.getText().trim()));
+        roomDTO.setNumLightBulbs(Integer.parseInt(numLightBulbsField.getText().trim()));
+
+        // Convert LocalDate to Date
+        LocalDate localDate = startDatePicker.getValue();
+        if (localDate != null) {
+            Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            roomDTO.setStartDateOfOperation(date);
+        }
+
+        // Room type specific fields
+        String selectedRoomType = roomTypeComboBox.getValue();
+        if (selectedRoomType != null) {
+            if (selectedRoomType.contains(LECTURE_HALL)) {
+                roomDTO.setRoomType("LECTURE_HALL");
+                roomDTO.setHasProjector(hasProjectorCheckBox.isSelected());
+            } else if (selectedRoomType.contains(COMPUTER_LAB)) {
+                roomDTO.setRoomType("COMPUTER_LAB");
+                roomDTO.setNumComputers(Integer.parseInt(numComputersField.getText().trim()));
+            } else if (selectedRoomType.contains(LABORATORY)) {
+                roomDTO.setRoomType("LABORATORY");
+                roomDTO.setSpecialization(specializationComboBox.getValue());
+                roomDTO.setCapacity(Integer.parseInt(capacityField.getText().trim()));
+                roomDTO.setHasSink(hasSinkCheckBox.isSelected());
+            }
+        }
+
+        return roomDTO;
+    }
+
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -204,5 +263,10 @@ public class AddRoomView implements Initializable, Subscriber {
 
     @Override
     public void update() {
+        // Handle model updates if needed
+        StatusDTO status = addRoomController.addRoomModel.statusDTO;
+        if (status != null) {
+            System.out.println("Model updated - Status: " + status.getStatus() + ", Message: " + status.getMessage());
+        }
     }
 }
