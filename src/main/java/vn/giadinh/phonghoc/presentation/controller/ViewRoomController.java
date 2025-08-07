@@ -1,6 +1,5 @@
 package vn.giadinh.phonghoc.presentation.controller;
 
-import lombok.Getter;
 import vn.giadinh.phonghoc.business.usecase.ViewRoomUsecase;
 import vn.giadinh.phonghoc.dto.ListViewDTO;
 import vn.giadinh.phonghoc.dto.ViewRoomDTO;
@@ -11,8 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewRoomController {
-    @Getter
-    private static final ViewRoomModel viewRoomModel = new ViewRoomModel();
+    public static final ViewRoomModel viewRoomModel = new ViewRoomModel();
 
     public static void execute() throws SQLException {
         List<ViewRoomDTO> viewRoomDTOS = ViewRoomUsecase.execute();

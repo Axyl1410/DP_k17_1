@@ -1,4 +1,4 @@
-package vn.giadinh.phonghoc.presentation.view;
+package vn.giadinh.phonghoc.shared.common;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

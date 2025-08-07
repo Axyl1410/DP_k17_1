@@ -21,5 +21,9 @@ public class Main extends Application {
         stage.setTitle("Quản lý phòng học");
         stage.setScene(scene);
         stage.show();
+
+        stage.setOnCloseRequest(event -> {
+            System.exit(0);
+        });
     }
 }

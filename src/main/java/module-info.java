@@ -18,4 +18,6 @@ module vn.giadinh.phonghoc {
     opens vn.giadinh.phonghoc.presentation.view to javafx.fxml;
     opens vn.giadinh.phonghoc.presentation.model to javafx.fxml;
     opens vn.giadinh.phonghoc.presentation.controller to javafx.fxml;
+    exports vn.giadinh.phonghoc.shared.common;
+    opens vn.giadinh.phonghoc.shared.common to javafx.fxml;
 }

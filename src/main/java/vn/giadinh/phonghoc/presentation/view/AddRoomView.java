@@ -9,6 +9,7 @@ import vn.giadinh.phonghoc.dto.StatusDTO;
 import vn.giadinh.phonghoc.presentation.controller.AddRoomController;
 import vn.giadinh.phonghoc.presentation.model.AddRoomModel;
 import vn.giadinh.phonghoc.presentation.observer.Subscriber;
+import vn.giadinh.phonghoc.shared.common.FormNavigator;
 import vn.giadinh.phonghoc.shared.enums.StatusCode;
 
 import java.net.URL;
@@ -197,9 +198,7 @@ public class AddRoomView implements Initializable, Subscriber {
     }
 
     private void handleBack() {
-        // Close the current form window
-        javafx.stage.Stage stage = (javafx.stage.Stage) backButton.getScene().getWindow();
-        stage.close();
+        FormNavigator.navigateToForm(backButton.getScene(), "/vn/giadinh/phonghoc/list-room-view.fxml", "Quản lý phòng học");
     }
 
     private RoomDTO createRoomDTO() {
@@ -245,7 +244,7 @@ public class AddRoomView implements Initializable, Subscriber {
     @Override
     public void update() {
         // Handle model updates if needed
-        StatusDTO status = AddRoomController.addRoomModel.statusDTO;
+        StatusDTO status = AddRoomController.addRoomModel.getStatusDTO();
         if (status != null) {
             System.out.println("Model updated - Status: " + status.getStatus() + ", Message: " + status.getMessage());
         }

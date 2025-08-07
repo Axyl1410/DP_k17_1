@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Publisher {
-    private List<Subscriber> subscribers = new ArrayList<>();
+    private final List<Subscriber> subscribers = new ArrayList<>();
 
     public void addSubscriber(Subscriber subscriber) {
         subscribers.add(subscriber);

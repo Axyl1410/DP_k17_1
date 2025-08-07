@@ -10,6 +10,7 @@ import vn.giadinh.phonghoc.dto.ListViewDTO;
 import vn.giadinh.phonghoc.presentation.controller.ViewRoomController;
 import vn.giadinh.phonghoc.presentation.model.ViewRoomModel;
 import vn.giadinh.phonghoc.presentation.observer.Subscriber;
+import vn.giadinh.phonghoc.shared.common.FormNavigator;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -79,7 +80,7 @@ public class ListRoomView implements Initializable, Subscriber {
         setupTableColumns();
         setupEventHandlers();
         // Connect to the model
-        ViewRoomModel model = ViewRoomController.getViewRoomModel();
+        ViewRoomModel model = ViewRoomController.viewRoomModel;
         setViewModel(model);
         // Load initial data
         try {
@@ -178,7 +179,7 @@ public class ListRoomView implements Initializable, Subscriber {
     }
 
     private void addRoom() {
-        FormNavigator.openFormInNewWindow("/vn/giadinh/phonghoc/add-room-view.fxml", "Thêm phòng học mới");
+        FormNavigator.navigateToForm(toast.getScene(), "/vn/giadinh/phonghoc/add-room-view.fxml", "Thêm phòng học mới");
     }
 
     private void updateRoom() {
