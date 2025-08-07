@@ -227,6 +227,12 @@ public class ListRoomView implements Initializable, Subscriber {
     public void update() {
         // IMPORTANT: Ensure UI updates run on the JavaFX Application Thread.
         Platform.runLater(() -> {
+            try {
+                ViewRoomController.execute();
+            } catch (Exception e) {
+                toast.setText("Lỗi khi load lại dữ liệu: " + e.getMessage());
+                e.printStackTrace();
+            }
             if (viewModel != null && viewModel.listViewDTOS != null) {
                 toast.setText("Updating UI with " + viewModel.listViewDTOS.size() + " items.");
                 showList(viewModel);
