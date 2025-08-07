@@ -151,16 +151,24 @@ public class AddRoomView implements Initializable, Subscriber {
     }
 
     private void handleSaveRoom() {
-        RoomDTO roomDTO = createRoomDTO();
-        model.statusDTO = AddRoomController.execute(roomDTO);
-        StatusDTO statusdto = model.statusDTO;
-        StatusCode status = statusdto.getStatus();
-        String message = statusdto.getMessage();
-        if (status.equals(StatusCode.SUCCESS)) {
-            showAlert("Thành công", "Phòng học đã được lưu thành công!");
-            clearForm();
-        } else {
-            showAlert("Lỗi", "Không thể lưu phòng học: " + message);
+        try {
+            RoomDTO roomDTO = createRoomDTO();
+            model.statusDTO = AddRoomController.execute(roomDTO);
+            StatusDTO statusdto = model.statusDTO;
+            StatusCode status = statusdto.getStatus();
+            String message = statusdto.getMessage();
+            System.out.println("Status: " + status + ", Message: " + message); // Debug info
+            if (status.equals(StatusCode.SUCCESS)) {
+                showAlert("Thành công", "Phòng học đã được lưu thành công!");
+                clearForm();
+            } else {
+                showAlert("Lỗi", "Không thể lưu phòng học: " + message);
+            }
+        } catch (NumberFormatException e) {
+            showAlert("Lỗi",
+                    "Dữ liệu không hợp lệ: Vui lòng nhập đúng định dạng số cho diện tích, số bóng đèn, số máy tính hoặc sức chứa.");
+        } catch (Exception e) {
+            showAlert("Lỗi", "Có lỗi xảy ra: " + e.getMessage());
         }
     }
 
@@ -190,10 +198,10 @@ public class AddRoomView implements Initializable, Subscriber {
     private RoomDTO createRoomDTO() {
         RoomDTO roomDTO = new RoomDTO();
         // Basic information
-        roomDTO.setRoomId(roomIdField.getText().trim());
-        roomDTO.setBuildingBlock(buildingBlockField.getText().trim());
-        roomDTO.setArea(Double.parseDouble(areaField.getText().trim()));
-        roomDTO.setNumLightBulbs(Integer.parseInt(numLightBulbsField.getText().trim()));
+        roomDTO.setRoomId(roomIdField.getText());
+        roomDTO.setBuildingBlock(buildingBlockField.getText());
+        roomDTO.setArea(Double.parseDouble(areaField.getText()));
+        roomDTO.setNumLightBulbs(Integer.parseInt(numLightBulbsField.getText()));
         // Convert LocalDate to Date
         LocalDate localDate = startDatePicker.getValue();
         if (localDate != null) {
@@ -208,11 +216,11 @@ public class AddRoomView implements Initializable, Subscriber {
                 roomDTO.setHasProjector(hasProjectorCheckBox.isSelected());
             } else if (selectedRoomType.contains(RoomType.COMPUTER_LAB.getCode())) {
                 roomDTO.setRoomType(RoomType.COMPUTER_LAB.getCode());
-                roomDTO.setNumComputers(Integer.parseInt(numComputersField.getText().trim()));
+                roomDTO.setNumComputers(Integer.parseInt(numComputersField.getText()));
             } else if (selectedRoomType.contains(RoomType.LABORATORY.getCode())) {
                 roomDTO.setRoomType(RoomType.LABORATORY.getCode());
                 roomDTO.setSpecialization(specializationComboBox.getValue());
-                roomDTO.setCapacity(Integer.parseInt(capacityField.getText().trim()));
+                roomDTO.setCapacity(Integer.parseInt(capacityField.getText()));
                 roomDTO.setHasSink(hasSinkCheckBox.isSelected());
             }
         }

@@ -27,9 +27,15 @@ public class AddRoomUsecase {
             addRoomDAO.addRoom(roomDTO);
             statusDTO.setStatus(StatusCode.SUCCESS);
             statusDTO.setMessage("Room added successfully");
-        } catch (IllegalArgumentException | SQLException e) {
+        } catch (IllegalArgumentException e) {
             statusDTO.setStatus(StatusCode.FAILURE);
             statusDTO.setMessage(e.getMessage());
+        } catch (SQLException e) {
+            statusDTO.setStatus(StatusCode.FAILURE);
+            statusDTO.setMessage("Lỗi cơ sở dữ liệu: " + e.getMessage());
+        } catch (Exception e) {
+            statusDTO.setStatus(StatusCode.FAILURE);
+            statusDTO.setMessage("Lỗi không xác định: " + e.getMessage());
         }
         return statusDTO;
     }
@@ -40,10 +46,6 @@ public class AddRoomUsecase {
         }
         if (dto.getRoomId() == null || dto.getRoomId().trim().isEmpty()) {
             throw new IllegalArgumentException("Mã phòng không được để trống.");
-        }
-        if (!dto.getRoomId().matches("^[A-Z0-9-]{3,15}$")) {
-            throw new IllegalArgumentException(
-                    "Mã phòng phải từ 3-15 ký tự, chỉ bao gồm chữ hoa, số và dấu gạch ngang (-).");
         }
         if (dto.getBuildingBlock() == null || dto.getBuildingBlock().trim().isEmpty()) {
             throw new IllegalArgumentException("Tòa nhà không được để trống.");

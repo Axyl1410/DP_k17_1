@@ -14,7 +14,6 @@ public class AddRoomController {
         try {
             statusDTO = AddRoomUsecase.execute(roomDTO);
             addRoomModel.statusDTO = statusDTO;
-
         } catch (Exception e) {
             statusDTO.setStatus(StatusCode.FAILURE);
             statusDTO.setMessage(e.getMessage());
