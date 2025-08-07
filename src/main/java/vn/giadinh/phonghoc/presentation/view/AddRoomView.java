@@ -10,6 +10,7 @@ import vn.giadinh.phonghoc.presentation.controller.AddRoomController;
 import vn.giadinh.phonghoc.presentation.model.AddRoomModel;
 import vn.giadinh.phonghoc.presentation.observer.Subscriber;
 import vn.giadinh.phonghoc.shared.common.FormNavigator;
+import vn.giadinh.phonghoc.shared.enums.RoomType;
 import vn.giadinh.phonghoc.shared.enums.StatusCode;
 
 import java.net.URL;
@@ -21,10 +22,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class AddRoomView implements Initializable, Subscriber {
-    // Room type constants
-    private static final String LECTURE_HALL = "LECTURE_HALL";
-    private static final String COMPUTER_LAB = "COMPUTER_LAB";
-    private static final String LABORATORY = "LABORATORY";
     // Specialization options for laboratory
     private static final List<String> SPECIALIZATIONS = Arrays.asList(
             "Chemistry", "Physics", "Biology", "Computer Science",
@@ -61,6 +58,9 @@ public class AddRoomView implements Initializable, Subscriber {
     private TextField capacityField;
     @FXML
     private CheckBox hasSinkCheckBox;
+    // Placeholder section
+    @FXML
+    private VBox placeholderSection;
     // Action Buttons
     @FXML
     private Button saveButton;
@@ -88,11 +88,10 @@ public class AddRoomView implements Initializable, Subscriber {
     }
 
     private void setupRoomTypeComboBox() {
-        // Add room type options
-        roomTypeComboBox.getItems().addAll(
-                "LECTURE_HALL - Phòng lý thuyết",
-                "COMPUTER_LAB - Phòng máy tính",
-                "LABORATORY - Phòng thí nghiệm");
+        // Add room type options using enum
+        for (RoomType type : RoomType.values()) {
+            roomTypeComboBox.getItems().add(type.getFullDisplayName());
+        }
         // Add listener for room type selection
         roomTypeComboBox.setOnAction(event -> {
             String selectedItem = roomTypeComboBox.getValue();
@@ -121,15 +120,21 @@ public class AddRoomView implements Initializable, Subscriber {
         // Hide all specific sections first
         hideAllSpecificSections();
         // Show appropriate section based on selection
-        if (selectedItem.contains(LECTURE_HALL)) {
+        if (selectedItem.contains(RoomType.LECTURE_HALL.getCode())) {
             lectureHallSection.setVisible(true);
             lectureHallSection.setManaged(true);
-        } else if (selectedItem.contains(COMPUTER_LAB)) {
+            placeholderSection.setVisible(false);
+            placeholderSection.setManaged(false);
+        } else if (selectedItem.contains(RoomType.COMPUTER_LAB.getCode())) {
             computerLabSection.setVisible(true);
             computerLabSection.setManaged(true);
-        } else if (selectedItem.contains(LABORATORY)) {
+            placeholderSection.setVisible(false);
+            placeholderSection.setManaged(false);
+        } else if (selectedItem.contains(RoomType.LABORATORY.getCode())) {
             laboratorySection.setVisible(true);
             laboratorySection.setManaged(true);
+            placeholderSection.setVisible(false);
+            placeholderSection.setManaged(false);
         }
     }
 
@@ -140,14 +145,12 @@ public class AddRoomView implements Initializable, Subscriber {
         computerLabSection.setManaged(false);
         laboratorySection.setVisible(false);
         laboratorySection.setManaged(false);
+        // Show placeholder when no section is selected
+        placeholderSection.setVisible(true);
+        placeholderSection.setManaged(true);
     }
 
     private void handleSaveRoom() {
-        // Validate required fields
-        if (!validateBasicFields()) {
-            showAlert("Lỗi", "Vui lòng điền đầy đủ thông tin cơ bản!");
-            return;
-        }
         RoomDTO roomDTO = createRoomDTO();
         model.statusDTO = AddRoomController.execute(roomDTO);
         StatusDTO statusdto = model.statusDTO;
@@ -159,24 +162,6 @@ public class AddRoomView implements Initializable, Subscriber {
         } else {
             showAlert("Lỗi", "Không thể lưu phòng học: " + message);
         }
-    }
-
-    private boolean validateBasicFields() {
-        return roomIdField.getText() != null && !roomIdField.getText().trim().isEmpty() &&
-                roomTypeComboBox.getValue() != null &&
-                buildingBlockField.getText() != null && !buildingBlockField.getText().trim().isEmpty() &&
-                areaField.getText() != null && !areaField.getText().trim().isEmpty() &&
-                numLightBulbsField.getText() != null && !numLightBulbsField.getText().trim().isEmpty() &&
-                startDatePicker.getValue() != null;
-    }
-
-    private boolean validateComputerLabFields() {
-        return numComputersField.getText() != null && !numComputersField.getText().trim().isEmpty();
-    }
-
-    private boolean validateLaboratoryFields() {
-        return specializationComboBox.getValue() != null &&
-                capacityField.getText() != null && !capacityField.getText().trim().isEmpty();
     }
 
     private void clearForm() {
@@ -198,7 +183,8 @@ public class AddRoomView implements Initializable, Subscriber {
     }
 
     private void handleBack() {
-        FormNavigator.navigateToForm(backButton.getScene(), "/vn/giadinh/phonghoc/list-room-view.fxml", "Quản lý phòng học");
+        FormNavigator.navigateToForm(backButton.getScene(), "/vn/giadinh/phonghoc/list-room-view.fxml",
+                "Quản lý phòng học");
     }
 
     private RoomDTO createRoomDTO() {
@@ -217,14 +203,14 @@ public class AddRoomView implements Initializable, Subscriber {
         // Room type specific fields
         String selectedRoomType = roomTypeComboBox.getValue();
         if (selectedRoomType != null) {
-            if (selectedRoomType.contains(LECTURE_HALL)) {
-                roomDTO.setRoomType("LECTURE_HALL");
+            if (selectedRoomType.contains(RoomType.LECTURE_HALL.getCode())) {
+                roomDTO.setRoomType(RoomType.LECTURE_HALL.getCode());
                 roomDTO.setHasProjector(hasProjectorCheckBox.isSelected());
-            } else if (selectedRoomType.contains(COMPUTER_LAB)) {
-                roomDTO.setRoomType("COMPUTER_LAB");
+            } else if (selectedRoomType.contains(RoomType.COMPUTER_LAB.getCode())) {
+                roomDTO.setRoomType(RoomType.COMPUTER_LAB.getCode());
                 roomDTO.setNumComputers(Integer.parseInt(numComputersField.getText().trim()));
-            } else if (selectedRoomType.contains(LABORATORY)) {
-                roomDTO.setRoomType("LABORATORY");
+            } else if (selectedRoomType.contains(RoomType.LABORATORY.getCode())) {
+                roomDTO.setRoomType(RoomType.LABORATORY.getCode());
                 roomDTO.setSpecialization(specializationComboBox.getValue());
                 roomDTO.setCapacity(Integer.parseInt(capacityField.getText().trim()));
                 roomDTO.setHasSink(hasSinkCheckBox.isSelected());
@@ -243,11 +229,6 @@ public class AddRoomView implements Initializable, Subscriber {
 
     @Override
     public void update() {
-        // Handle model updates if needed
-        StatusDTO status = AddRoomController.addRoomModel.getStatusDTO();
-        if (status != null) {
-            System.out.println("Model updated - Status: " + status.getStatus() + ", Message: " + status.getMessage());
-        }
     }
 
 }
