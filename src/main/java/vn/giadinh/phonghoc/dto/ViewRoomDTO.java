@@ -17,4 +17,5 @@ public class ViewRoomDTO {
     private Date startDateOfOperation;
     private boolean sufficientLight;
     private boolean isStandard;
+    private String roomType;
 }

@@ -71,6 +71,8 @@ public class ListRoomView implements Initializable, Subscriber {
     @FXML
     private TableColumn<ListViewDTO, String> buildingBlock;
     @FXML
+    private TableColumn<ListViewDTO, String> roomType;
+    @FXML
     private TableColumn<ListViewDTO, String> area;
     @FXML
     private TableColumn<ListViewDTO, String> numLightBulbs;
@@ -106,6 +108,7 @@ public class ListRoomView implements Initializable, Subscriber {
     private void setupTableColumns() {
         roomId.setCellValueFactory(new PropertyValueFactory<>("roomId"));
         buildingBlock.setCellValueFactory(new PropertyValueFactory<>("buildingBlock"));
+        roomType.setCellValueFactory(new PropertyValueFactory<>("roomType"));
         area.setCellValueFactory(new PropertyValueFactory<>("area"));
         numLightBulbs.setCellValueFactory(new PropertyValueFactory<>("numLightBulbs"));
         startDateOfOperation.setCellValueFactory(new PropertyValueFactory<>("startDateOfOperation"));

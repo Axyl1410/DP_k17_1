@@ -15,6 +15,7 @@ public abstract class Room {
     protected double area;
     protected int numLightBulbs;
     protected Date startDateOfOperation;
+    protected String roomType;
 
     public Boolean checkSufficientLight() {
         return numLightBulbs >= area / 10;

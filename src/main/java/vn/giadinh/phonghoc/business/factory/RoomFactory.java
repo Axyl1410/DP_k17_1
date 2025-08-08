@@ -25,6 +25,7 @@ public class RoomFactory {
         laboratory.setArea(roomDTO.getArea());
         laboratory.setNumLightBulbs(roomDTO.getNumLightBulbs());
         laboratory.setStartDateOfOperation(roomDTO.getStartDateOfOperation());
+        laboratory.setRoomType(roomDTO.getRoomType());
         laboratory.setSpecialization(roomDTO.getSpecialization());
         laboratory.setCapacity(roomDTO.getCapacity());
         laboratory.setHasSink(roomDTO.getHasSink() != null ? roomDTO.getHasSink() : false);
@@ -38,6 +39,7 @@ public class RoomFactory {
         lectureHall.setArea(roomDTO.getArea());
         lectureHall.setNumLightBulbs(roomDTO.getNumLightBulbs());
         lectureHall.setStartDateOfOperation(roomDTO.getStartDateOfOperation());
+        lectureHall.setRoomType(roomDTO.getRoomType());
         lectureHall.setHasProjector(roomDTO.getHasProjector() != null ? roomDTO.getHasProjector() : false);
         return lectureHall;
     }
@@ -49,6 +51,7 @@ public class RoomFactory {
         computerLab.setArea(roomDTO.getArea());
         computerLab.setNumLightBulbs(roomDTO.getNumLightBulbs());
         computerLab.setStartDateOfOperation(roomDTO.getStartDateOfOperation());
+        computerLab.setRoomType(roomDTO.getRoomType());
         computerLab.setNumComputers(roomDTO.getNumComputers());
         return computerLab;
     }

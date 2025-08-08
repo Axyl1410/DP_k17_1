@@ -15,4 +15,5 @@ public class ListViewDTO {
     private String startDateOfOperation;
     private String sufficientLight;
     private String isStandard;
+    private String roomType;
 }

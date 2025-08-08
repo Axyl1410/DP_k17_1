@@ -153,6 +153,8 @@
                     <TableColumn fx:id="roomId" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Mã phòng"/>
                     <TableColumn fx:id="buildingBlock" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;"
                                  text="Dãy nhà"/>
+                    <TableColumn fx:id="roomType" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;"
+                                 text="Loại phòng"/>
                     <TableColumn fx:id="area" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Diện tích"/>
                     <TableColumn fx:id="numLightBulbs" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;"
                                  text="Số bóng đèn"/>

@@ -29,6 +29,7 @@ public class ViewRoomController {
             item.setStartDateOfOperation(String.valueOf(dto.getStartDateOfOperation()));
             item.setSufficientLight(String.valueOf(dto.isSufficientLight()));
             item.setIsStandard(String.valueOf(dto.isStandard()));
+            item.setRoomType(dto.getRoomType());
             listViewDTOS.add(item);
         }
         return listViewDTOS;
