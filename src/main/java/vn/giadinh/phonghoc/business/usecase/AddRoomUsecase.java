@@ -3,6 +3,7 @@ package vn.giadinh.phonghoc.business.usecase;
 import vn.giadinh.phonghoc.dto.RoomDTO;
 import vn.giadinh.phonghoc.dto.StatusDTO;
 import vn.giadinh.phonghoc.persistence.dao.AddRoomDAO;
+import vn.giadinh.phonghoc.persistence.gateway.AddRoomGateway;
 import vn.giadinh.phonghoc.shared.enums.RoomType;
 import vn.giadinh.phonghoc.shared.enums.StatusCode;
 
@@ -10,12 +11,12 @@ import java.sql.SQLException;
 import java.util.Date;
 
 public class AddRoomUsecase {
-    private static final AddRoomDAO addRoomDAO;
+    private static final AddRoomGateway GATEWAY;
     public static StatusDTO statusDTO = new StatusDTO();
 
     static {
         try {
-            addRoomDAO = new AddRoomDAO();
+            GATEWAY = new AddRoomDAO();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -24,7 +25,7 @@ public class AddRoomUsecase {
     public static StatusDTO execute(RoomDTO roomDTO) {
         try {
             validateRoom(roomDTO);
-            addRoomDAO.addRoom(roomDTO);
+            GATEWAY.addRoom(roomDTO);
             statusDTO.setStatus(StatusCode.SUCCESS);
             statusDTO.setMessage("Room added successfully");
         } catch (IllegalArgumentException e) {

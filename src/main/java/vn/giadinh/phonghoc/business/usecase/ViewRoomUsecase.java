@@ -5,6 +5,7 @@ import vn.giadinh.phonghoc.dto.RoomDTO;
 import vn.giadinh.phonghoc.dto.ViewRoomDTO;
 import vn.giadinh.phonghoc.entity.Room;
 import vn.giadinh.phonghoc.persistence.dao.ViewRoomDAO;
+import vn.giadinh.phonghoc.persistence.gateway.ViewRoomGateway;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -12,18 +13,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewRoomUsecase {
-    private static final ViewRoomDAO viewRoomDAO;
+    private static final ViewRoomGateway GATEWAY;
 
     static {
         try {
-            viewRoomDAO = new ViewRoomDAO();
+            GATEWAY = new ViewRoomDAO();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     public static List<ViewRoomDTO> execute() throws SQLException {
-        List<RoomDTO> roomDTOList = viewRoomDAO.getAll();
+        List<RoomDTO> roomDTOList = GATEWAY.getAll();
         List<Room> roomList = convertToBusinessObjects(roomDTOList);
         return convertToViewRoomDTO(roomList);
     }
