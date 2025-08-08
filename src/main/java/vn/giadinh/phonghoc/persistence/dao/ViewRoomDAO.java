@@ -14,7 +14,7 @@ public class ViewRoomDAO implements ViewRoomGateway {
     private final Connection connection;
 
     public ViewRoomDAO() throws SQLException {
-        this.connection = (Connection) InitializeDAO.GetConnection();
+        this.connection = InitializeDAO.getConnection();
     }
 
     @Override

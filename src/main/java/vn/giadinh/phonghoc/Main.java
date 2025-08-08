@@ -15,13 +15,12 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("list-room-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
-        stage.setTitle("Quản lý phòng học");
+        stage.setTitle("Đăng Nhập - Quản lý phòng học");
         stage.setScene(scene);
         stage.show();
-
         stage.setOnCloseRequest(event -> {
             System.exit(0);
         });

@@ -11,7 +11,7 @@ public class DeleteRoomDAO implements DeleteRoomGateway {
     private final Connection connection;
 
     public DeleteRoomDAO() throws SQLException {
-        this.connection = (Connection) InitializeDAO.GetConnection();
+        this.connection = InitializeDAO.getConnection();
     }
 
     @Override
@@ -25,7 +25,6 @@ public class DeleteRoomDAO implements DeleteRoomGateway {
                 throw new SQLException("Phòng học với mã " + roomId + " không tồn tại.");
             }
         }
-
         // Delete the room
         String deleteSql = "DELETE FROM rooms WHERE room_id = ?";
         try (PreparedStatement deleteStmt = connection.prepareStatement(deleteSql)) {

@@ -60,6 +60,9 @@ public class ListRoomView implements Initializable, Subscriber {
     private Button updateButton;
     @FXML
     private Button clearButton;
+    // --- Logout Button ---
+    @FXML
+    private Button logoutButton;
     // --- Table Components ---
     @FXML
     private TableView<ListViewDTO> roomTable;
@@ -147,6 +150,7 @@ public class ListRoomView implements Initializable, Subscriber {
         addButton.setOnAction(event -> addRoom());
         updateButton.setOnAction(event -> updateRoom());
         clearButton.setOnAction(event -> clearForm());
+        logoutButton.setOnAction(event -> handleLogout());
         // Table selection listener
         roomTable.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
@@ -298,6 +302,25 @@ public class ListRoomView implements Initializable, Subscriber {
         lightField.setText(room.getSufficientLight());
         statusField.setText(room.getIsStandard());
         startDatePicker.setText(room.getStartDateOfOperation());
+    }
+
+    private void handleLogout() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Xác nhận đăng xuất");
+        alert.setHeaderText("Xác nhận đăng xuất");
+        alert.setContentText("Bạn có chắc chắn muốn đăng xuất?");
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                try {
+                    // Navigate back to login form
+                    FormNavigator.navigateToForm(toast.getScene(), "/vn/giadinh/phonghoc/login-view.fxml", "Đăng Nhập");
+                    toast.setText("Đã đăng xuất thành công");
+                } catch (Exception e) {
+                    toast.setText("Lỗi đăng xuất: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override

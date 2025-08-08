@@ -12,7 +12,7 @@ public class AddRoomDAO implements AddRoomGateway {
     private final Connection connection;
 
     public AddRoomDAO() throws SQLException {
-        this.connection = (Connection) InitializeDAO.GetConnection();
+        this.connection = InitializeDAO.getConnection();
     }
 
     @Override
