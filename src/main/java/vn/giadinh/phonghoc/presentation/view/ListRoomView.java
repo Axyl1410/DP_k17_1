@@ -7,10 +7,17 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import vn.giadinh.phonghoc.dto.ListViewDTO;
+import vn.giadinh.phonghoc.dto.RoomDetailDTO;
+import vn.giadinh.phonghoc.dto.StatusDTO;
+import vn.giadinh.phonghoc.dto.UpdateRoomDTO;
+import vn.giadinh.phonghoc.presentation.controller.DeleteRoomController;
+import vn.giadinh.phonghoc.presentation.controller.EditRoomController;
 import vn.giadinh.phonghoc.presentation.controller.ViewRoomController;
+import vn.giadinh.phonghoc.presentation.model.DeleteRoomModel;
 import vn.giadinh.phonghoc.presentation.model.ViewRoomModel;
 import vn.giadinh.phonghoc.presentation.observer.Subscriber;
 import vn.giadinh.phonghoc.shared.common.FormNavigator;
+import vn.giadinh.phonghoc.shared.enums.StatusCode;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -183,8 +190,38 @@ public class ListRoomView implements Initializable, Subscriber {
     }
 
     private void updateRoom() {
-        // Implementation for update room functionality
-        System.out.println("Updating room...");
+        try {
+            // Get data from form fields
+            UpdateRoomDTO updateRoomDTO = new UpdateRoomDTO();
+            updateRoomDTO.setRoomId(idField.getText());
+            updateRoomDTO.setBuildingBlock(buildingBlockField.getText());
+            try {
+                updateRoomDTO.setArea(Double.parseDouble(areaField.getText()));
+            } catch (NumberFormatException e) {
+                toast.setText("Diện tích phải là số");
+                return;
+            }
+            try {
+                updateRoomDTO.setNumLightBulbs(Integer.parseInt(numLightBulbsField.getText()));
+            } catch (NumberFormatException e) {
+                toast.setText("Số bóng đèn phải là số nguyên");
+                return;
+            }
+            // Set other fields as needed
+            updateRoomDTO.setRoomType("LECTURE_HALL"); // Default type, can be enhanced with dropdown
+            updateRoomDTO.setHasProjector(false);
+            updateRoomDTO.setNumComputers(0);
+            updateRoomDTO.setCapacity(0);
+            updateRoomDTO.setHasSink(false);
+            // Execute update
+            EditRoomController.execute(updateRoomDTO);
+            toast.setText("Cập nhật phòng học thành công");
+            // Refresh the list
+            refreshRooms();
+        } catch (Exception e) {
+            toast.setText("Lỗi cập nhật: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void clearForm() {
@@ -198,20 +235,59 @@ public class ListRoomView implements Initializable, Subscriber {
     }
 
     private void editRoom(ListViewDTO room) {
-        loadRoomToForm(room);
+        // Navigate to edit form and get the controller
+        EditRoomView editRoomView = FormNavigator.navigateToFormWithData(
+                toast.getScene(),
+                "/vn/giadinh/phonghoc/edit-room-view.fxml",
+                "Chỉnh sửa phòng học");
+        // Set the room data to edit
+        if (editRoomView != null) {
+            editRoomView.setRoomIdToEdit(room.getRoomId());
+            System.out.println("Navigating to edit form for room: " + room.getRoomId());
+        }
     }
 
     private void deleteRoom(ListViewDTO room) {
+        // Tạo RoomDetailDTO để hiển thị thông tin chi tiết
+        RoomDetailDTO roomDetail = new RoomDetailDTO(room);
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Xác nhận xóa");
-        alert.setHeaderText("Bạn có chắc chắn muốn xóa phòng này?");
-        alert.setContentText("Phòng: " + room.getRoomId());
+        alert.setTitle("Xác nhận xóa phòng học");
+        alert.setHeaderText("Xác nhận xóa phòng học");
+        alert.setContentText(roomDetail.getDisplayText());
+        // Thiết lập kích thước alert để hiển thị đầy đủ thông tin
+        alert.setResizable(true);
+        alert.getDialogPane().setPrefWidth(500);
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                // Implementation for delete functionality
-                System.out.println("Deleting room: " + room.getRoomId());
+                try {
+                    DeleteRoomModel deleteRoomModel = DeleteRoomController.deleteRoomModel;
+                    DeleteRoomController.execute(room.getRoomId());
+                    StatusDTO modelStatusDTO = deleteRoomModel.statusDTO;
+                    StatusCode status = modelStatusDTO.getStatus();
+                    String message = modelStatusDTO.getMessage();
+                    System.out.println("Status: " + status + ", Message: " + message); // Debug info
+                    if (status.equals(StatusCode.SUCCESS)) {
+                        showAlert("Thành công", "Phòng học đã được xóa thành công!");
+                        toast.setText(message);
+                        refreshRooms();
+                    } else {
+                        toast.setText("Lỗi: " + message);
+                        showAlert("Lỗi", "Không thể xóa phòng học: " + message);
+                    }
+                } catch (Exception e) {
+                    toast.setText("Lỗi xóa phòng: " + e.getMessage());
+                    e.printStackTrace();
+                }
             }
         });
+    }
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
     private void loadRoomToForm(ListViewDTO room) {

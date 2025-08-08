@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="800.0" prefWidth="1200.0" spacing="20"
+      style="-fx-background-color: #f8f9fa;" xmlns="http://javafx.com/javafx/24.0.1"
+      fx:controller="vn.giadinh.phonghoc.presentation.view.EditRoomView">
+
+    <!-- Header -->
+    <HBox alignment="CENTER" spacing="10.0" style="-fx-background-color: #2c3e50; -fx-padding: 15;">
+        <Label style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: white;" text="Chỉnh sửa phòng học"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button fx:id="backButton" prefHeight="35.0" prefWidth="100.0"
+                style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 8 16;"
+                text="Quay lại"/>
+    </HBox>
+
+    <!-- Main Container - Split into two parts -->
+    <HBox spacing="20" VBox.vgrow="ALWAYS" style="-fx-padding: 20;">
+        
+        <!-- Left Side - Basic Form -->
+        <VBox prefWidth="600" spacing="15" style="-fx-padding: 20;">
+            <Label style="-fx-font-size: 20; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"
+                   text="Thông tin cơ bản"/>
+
+            <!-- Basic Information Section -->
+            <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 8;">
+                <GridPane hgap="15" vgap="10">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="NEVER" minWidth="150" prefWidth="150"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="200" prefWidth="300"/>
+                    </columnConstraints>
+
+                    <!-- Room ID (Read-only) -->
+                    <Label text="Mã phòng:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                    <TextField fx:id="roomIdField" promptText="Mã phòng" GridPane.columnIndex="1"
+                               GridPane.rowIndex="0" editable="false" style="-fx-background-color: #f8f9fa;"/>
+
+                    <!-- Room Type -->
+                    <Label text="Loại phòng (*):" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    <ComboBox fx:id="roomTypeComboBox" promptText="Chọn loại phòng" GridPane.columnIndex="1"
+                              GridPane.rowIndex="1"/>
+
+                    <!-- Building Block -->
+                    <Label text="Dãy nhà (*):" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                    <TextField fx:id="buildingBlockField" promptText="VD: Building A, Building B"
+                               GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                    <!-- Area -->
+                    <Label text="Diện tích (m²) (*):" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                    <TextField fx:id="areaField" promptText="VD: 80.5" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                    <!-- Number of Light Bulbs -->
+                    <Label text="Số bóng đèn (*):" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                    <TextField fx:id="numLightBulbsField" promptText="VD: 8" GridPane.columnIndex="1"
+                               GridPane.rowIndex="4"/>
+
+                    <!-- Start Operation Date -->
+                    <Label text="Ngày bắt đầu hoạt động (*):" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                    <DatePicker fx:id="startDatePicker" promptText="Chọn ngày" GridPane.columnIndex="1"
+                                GridPane.rowIndex="5"/>
+                    <rowConstraints>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                    </rowConstraints>
+                </GridPane>
+            </VBox>
+
+            <!-- Action Buttons -->
+            <HBox alignment="CENTER" spacing="15" style="-fx-padding: 20;">
+                <Button fx:id="updateButton"
+                        style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 24;"
+                        text="Cập nhật phòng học"/>
+                <Button fx:id="clearButton"
+                        style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 24;"
+                        text="Xóa form"/>
+                <Button fx:id="cancelButton"
+                        style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 24;"
+                        text="Hủy"/>
+            </HBox>
+        </VBox>
+
+        <!-- Right Side - Specific Sections -->
+        <VBox prefWidth="500" spacing="15" style="-fx-padding: 20;">
+            <Label style="-fx-font-size: 20; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"
+                   text="Thông tin chi tiết theo loại phòng"/>
+
+            <!-- Lecture Hall Specific Fields -->
+            <VBox fx:id="lectureHallSection" spacing="10"
+                  style="-fx-background-color: #e8f4fd; -fx-padding: 20; -fx-background-radius: 8;" visible="false">
+                <Label style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #2980b9;"
+                       text="Thông tin phòng lý thuyết"/>
+
+                <HBox alignment="CENTER_LEFT" spacing="20">
+                    <CheckBox fx:id="hasProjectorCheckBox" text="Có máy chiếu"/>
+                </HBox>
+            </VBox>
+
+            <!-- Computer Lab Specific Fields -->
+            <VBox fx:id="computerLabSection" spacing="10"
+                  style="-fx-background-color: #f0f8ff; -fx-padding: 20; -fx-background-radius: 8;" visible="false">
+                <Label style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #3498db;"
+                       text="Thông tin phòng máy tính"/>
+
+                <GridPane hgap="15" vgap="10">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="NEVER" minWidth="150" prefWidth="150"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="200" prefWidth="300"/>
+                    </columnConstraints>
+
+                    <Label text="Số máy tính (*):" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                    <TextField fx:id="numComputersField" promptText="VD: 50" GridPane.columnIndex="1"
+                               GridPane.rowIndex="0"/>
+                    <rowConstraints>
+                        <RowConstraints/>
+                    </rowConstraints>
+                </GridPane>
+            </VBox>
+
+            <!-- Laboratory Specific Fields -->
+            <VBox fx:id="laboratorySection" spacing="10"
+                  style="-fx-background-color: #f0fff0; -fx-padding: 20; -fx-background-radius: 8;" visible="false">
+                <Label style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #27ae60;"
+                       text="Thông tin phòng thí nghiệm"/>
+
+                <GridPane hgap="15" vgap="10">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="NEVER" minWidth="150" prefWidth="150"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="200" prefWidth="300"/>
+                    </columnConstraints>
+
+                    <Label text="Chuyên ngành (*):" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                    <ComboBox fx:id="specializationComboBox" promptText="Chọn chuyên ngành" GridPane.columnIndex="1"
+                              GridPane.rowIndex="0"/>
+
+                    <Label text="Sức chứa (*):" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    <TextField fx:id="capacityField" promptText="VD: 25" GridPane.columnIndex="1"
+                               GridPane.rowIndex="1"/>
+
+                    <Label text="Có bồn rửa:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                    <HBox alignment="CENTER_LEFT" spacing="20" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <CheckBox fx:id="hasSinkCheckBox" text="Có bồn rửa"/>
+                    </HBox>
+                    <rowConstraints>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                    </rowConstraints>
+                </GridPane>
+            </VBox>
+
+            <!-- Placeholder when no section is selected -->
+            <VBox spacing="10" style="-fx-background-color: #f8f9fa; -fx-padding: 20; -fx-background-radius: 8;" 
+                  fx:id="placeholderSection">
+                <Label style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #6c757d;"
+                       text="Chọn loại phòng để xem thông tin chi tiết"/>
+                <Label style="-fx-font-size: 14; -fx-text-fill: #6c757d;"
+                       text="Thông tin chi tiết sẽ hiển thị ở đây"/>
+            </VBox>
+        </VBox>
+    </HBox>
+
+</VBox>

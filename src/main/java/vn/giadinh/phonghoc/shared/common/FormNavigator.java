@@ -23,6 +23,23 @@ public class FormNavigator {
         }
     }
 
+    public static <T> T navigateToFormWithData(Scene currentScene, String fxmlPath, String title) {
+        try {
+            FXMLLoader loader = new FXMLLoader(FormNavigator.class.getResource(fxmlPath));
+            Parent root = loader.load();
+            currentScene.setRoot(root);
+            Stage currentStage = (Stage) currentScene.getWindow();
+            currentStage.setTitle(title);
+
+            // Return the controller for further configuration
+            return loader.getController();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showError("Lỗi", "Không thể mở form: " + e.getMessage());
+            return null;
+        }
+    }
+
     public static void openFormInNewWindow(String fxmlPath, String title) {
         try {
             FXMLLoader loader = new FXMLLoader(FormNavigator.class.getResource(fxmlPath));
