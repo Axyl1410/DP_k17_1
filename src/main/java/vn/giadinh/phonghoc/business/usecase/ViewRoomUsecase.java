@@ -54,7 +54,8 @@ public class ViewRoomUsecase {
             viewRoomDTO.setSufficientLight(room.checkSufficientLight());
             viewRoomDTO.setStandard(room.meetsStandard());
             viewRoomDTO.setRoomType(room.getRoomType());
-            viewRoomDTOList.add(viewRoomDTO);
+            if (viewRoomDTO.isStandard() && viewRoomDTO.isSufficientLight())
+                viewRoomDTOList.add(viewRoomDTO);
         }
         return viewRoomDTOList;
     }
