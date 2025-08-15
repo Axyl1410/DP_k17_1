@@ -1,344 +1,183 @@
-# Classroom Management System
+# Hệ Thống Quản Lý Phòng Học - Chức Năng Thêm Phòng
 
-A comprehensive JavaFX application for managing classroom information with authentication, CRUD operations, and modern UI design.
+## Tổng Quan
 
-## 🚀 Features
+Dự án này triển khai chức năng thêm phòng học mới theo mô hình kiến trúc MVC (Model-View-Controller) với JavaFX và Java 17+.
 
-### Authentication System
+## Kiến Trúc 3-Layer Architecture
 
-- **User Login/Register**: Secure authentication with password hashing (SHA-256)
-- **Session Management**: User session handling with logout functionality
-- **Role-based Access**: Support for ADMIN and USER roles
-- **Password Security**: Secure password storage and verification
+### 1. Model (AddRoomModel)
 
-### Classroom Management
+- **Vị trí**: `src/main/java/vn/giadinh/phonghoc/presentation/model/AddRoomModel.java`
+- **Chức năng**:
+  - Quản lý dữ liệu phòng học
+  - Xử lý trạng thái form
+  - Thông báo thay đổi cho các observer
+  - **Không chứa business logic** (tuân thủ 3-layer architecture)
 
-- **View Classrooms**: Display all classrooms in a responsive table
-- **Add Classrooms**: Create new classroom entries with validation
-- **Edit Classrooms**: Modify existing classroom information
-- **Delete Classrooms**: Remove classrooms with confirmation dialogs
-- **Search & Filter**: Advanced search and filtering capabilities
+### 2. View (AddRoomView)
 
-### User Interface
+- **Vị trí**: `src/main/java/vn/giadinh/phonghoc/presentation/view/AddRoomView.java`
+- **FXML**: `src/main/resources/vn/giadinh/phonghoc/add-room-view.fxml`
+- **Chức năng**:
+  - Hiển thị giao diện người dùng
+  - Xử lý sự kiện từ người dùng
+  - Validation dữ liệu đầu vào
+  - Hiển thị thông báo lỗi/thành công
 
-- **Modern Design**: Clean, responsive UI with BootstrapFX styling
-- **Real-time Updates**: Live data updates using Observer pattern
-- **Confirmation Dialogs**: User-friendly confirmation for critical actions
-- **Status Feedback**: Toast messages and alerts for user feedback
+### 3. Controller (AddRoomController)
 
-## 🏗️ Architecture
+- **Vị trí**: `src/main/java/vn/giadinh/phonghoc/presentation/controller/AddRoomController.java`
+- **Chức năng**:
+  - Điều phối giữa Model và View
+  - **Field update coordination** (được chuyển từ Model)
+  - **Form validation coordination** (gọi UseCase)
+  - Xử lý logic nghiệp vụ
+  - Validation dữ liệu
+  - Gọi UseCase để thực hiện thao tác
 
-This project follows **Clean Architecture** principles with clear separation of concerns:
+### 4. UseCase (AddRoomUsecase)
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Presentation Layer                      │
-│  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐        │
-│  │   Views     │ │ Controllers │ │   Models    │        │
-│  └─────────────┘ └─────────────┘ └─────────────┘        │
-└─────────────────────────────────────────────────────────────┘
-┌─────────────────────────────────────────────────────────────┐
-│                     Business Layer                         │
-│  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐        │
-│  │  Use Cases  │ │   Factory   │ │   DTOs      │        │
-│  └─────────────┘ └─────────────┘ └─────────────┘        │
-└─────────────────────────────────────────────────────────────┘
-┌─────────────────────────────────────────────────────────────┐
-│                   Persistence Layer                       │
-│  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐        │
-│  │   Gateways  │ │    DAOs     │ │  Database   │        │
-│  └─────────────┘ └─────────────┘ └─────────────┘        │
-└─────────────────────────────────────────────────────────────┘
-```
+- **Vị trí**: `src/main/java/vn/giadinh/phonghoc/business/usecase/AddRoomUsecase.java`
+- **Chức năng**:
+  - Chứa logic nghiệp vụ chính
+  - **Form validation logic** (được chuyển từ Model)
+  - **Field update logic** (được chuyển từ Model)
+  - Validation dữ liệu theo quy tắc nghiệp vụ
+  - Gọi Gateway để lưu dữ liệu
+  - Trả về kết quả xử lý
 
-### Design Patterns
+### 5. Gateway & DAO
 
-- **Observer Pattern**: For UI updates and real-time data synchronization
-- **Factory Pattern**: For creating different types of rooms
-- **MVC Pattern**: For UI organization and data flow
-- **Repository Pattern**: For data access abstraction
+- **Gateway**: `src/main/java/vn/giadinh/phonghoc/persistence/gateway/AddRoomGateway.java`
+- **DAO**: `src/main/java/vn/giadinh/phonghoc/persistence/dao/AddRoomDAO.java`
+- **Chức năng**: Tương tác với cơ sở dữ liệu
 
-## 🛠️ Technology Stack
+## Các Loại Phòng Học
 
-- **Java**: Core programming language
-- **JavaFX**: UI framework for desktop applications
-- **BootstrapFX**: Modern UI styling
-- **MySQL**: Database management system
-- **JDBC**: Database connectivity
-- **Maven**: Build and dependency management
-- **Lombok**: Boilerplate code reduction
+### 1. Phòng Lý Thuyết (Lecture Hall)
 
-## 📋 Prerequisites
+- **Trường đặc biệt**: Có máy chiếu hay không
+- **Validation**: Không có validation đặc biệt
 
-- Java 17 or higher
-- MySQL 8.0 or higher
-- Maven 3.6 or higher
+### 2. Phòng Máy Tính (Computer Lab)
 
-## 🚀 Installation & Setup
+- **Trường đặc biệt**: Số lượng máy tính
+- **Validation**: Số máy tính phải > 0
 
-### 1. Clone the Repository
+### 3. Phòng Thí Nghiệm (Laboratory)
 
-```bash
-git clone <repository-url>
-cd phonghoc
-```
+- **Trường đặc biệt**:
+  - Chuyên ngành
+  - Sức chứa
+  - Có bồn rửa hay không
+- **Validation**:
+  - Chuyên ngành không được để trống
+  - Sức chứa phải > 0
 
-### 2. Database Setup
+## Cách Sử Dụng
 
-```sql
--- Create database
-CREATE DATABASE rooms;
-USE rooms;
-
--- Run the room table script
-source room.sql;
-
--- Run the users table script
-source users.sql;
-```
-
-### 3. Configure Database Connection
-
-Edit `src/main/java/vn/giadinh/phonghoc/persistence/dao/InitializeDAO.java`:
-
-```java
-String username = "your_username";
-String password = "your_password";
-String url = "jdbc:mysql://localhost:3306/rooms?useSSL=false&serverTimezone=UTC";
-```
-
-### 4. Build and Run
+### 1. Khởi Chạy Ứng Dụng
 
 ```bash
-# Clean and compile
+# Biên dịch dự án
 mvn clean compile
 
-# Run the application
+# Chạy ứng dụng
 mvn javafx:run
 ```
 
-## 👤 Default Users
+### 2. Quy Trình Thêm Phòng
 
-The system comes with pre-configured users:
+1. **Nhập thông tin cơ bản**:
 
-| Username | Password | Role  | Email             |
-| -------- | -------- | ----- | ----------------- |
-| admin    | 123456   | ADMIN | admin@example.com |
-| user1    | 123456   | USER  | user1@example.com |
-| user2    | 123456   | USER  | user2@example.com |
+   - Mã phòng (bắt buộc)
+   - Loại phòng (bắt buộc)
+   - Dãy nhà (bắt buộc)
+   - Diện tích (bắt buộc, > 0)
+   - Số bóng đèn (bắt buộc, >= 0)
+   - Ngày bắt đầu hoạt động (bắt buộc, không được là ngày tương lai)
 
-## 📊 Database Schema
+2. **Chọn loại phòng**: Giao diện sẽ hiển thị các trường đặc biệt tương ứng
 
-### Rooms Table
+3. **Nhập thông tin chi tiết** theo loại phòng đã chọn
 
-```sql
-CREATE TABLE rooms (
-    id VARCHAR(50) PRIMARY KEY,
-    building_block VARCHAR(100) NOT NULL,
-    area DOUBLE NOT NULL,
-    num_light_bulbs INT NOT NULL,
-    start_date_of_operation DATE NOT NULL,
-    sufficient_light BOOLEAN NOT NULL,
-    is_standard BOOLEAN NOT NULL,
-    room_type VARCHAR(50) NOT NULL,
-    has_projector BOOLEAN DEFAULT FALSE,
-    num_computers INT DEFAULT 0,
-    capacity INT DEFAULT 0,
-    has_sink BOOLEAN DEFAULT FALSE
-);
-```
+4. **Lưu phòng học**: Hệ thống sẽ validate và lưu vào cơ sở dữ liệu
 
-### Users Table
+### 3. Các Nút Chức Năng
 
-```sql
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    full_name VARCHAR(100) NOT NULL,
-    role VARCHAR(20) DEFAULT 'USER',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    is_active BOOLEAN DEFAULT TRUE
-);
-```
+- **Lưu phòng học**: Lưu thông tin phòng học mới
+- **Xóa form**: Xóa tất cả dữ liệu đã nhập
+- **Hủy**: Hủy bỏ thao tác thêm phòng
+- **Quay lại**: Quay về màn hình trước đó
 
-## 🎯 Core Features
+## Validation
 
-### Authentication
+### Validation Cơ Bản
 
-- **Login**: Username/password authentication with SHA-256 hashing
-- **Register**: New user registration with comprehensive validation
-- **Logout**: Secure session termination
-- **Password Security**: Encrypted password storage
+- Tất cả các trường bắt buộc không được để trống
+- Diện tích phải là số dương
+- Số bóng đèn không thể là số âm
+- Ngày bắt đầu hoạt động không thể là ngày trong tương lai
 
-### Classroom Operations
+### Validation Theo Loại Phòng
 
-- **Create**: Add new classrooms with validation
-- **Read**: View classroom list with search and filtering
-- **Update**: Edit classroom information
-- **Delete**: Remove classrooms with confirmation
+- **Phòng máy tính**: Số lượng máy tính phải > 0
+- **Phòng thí nghiệm**: Chuyên ngành không được để trống, sức chứa phải > 0
 
-### Search & Filter
+## Cấu Trúc Cơ Sở Dữ Liệu
 
-- **Keyword Search**: Search by room ID, building, or room type
-- **Building Filter**: Filter by building block
-- **Status Filter**: Filter by standard compliance
-- **Light Filter**: Filter by lighting conditions
+Bảng `rooms` chứa các trường:
 
-## 🔧 Project Structure
+- `room_id`: Mã phòng (Primary Key)
+- `room_type`: Loại phòng
+- `building_block`: Dãy nhà
+- `area_sqm`: Diện tích (m²)
+- `num_light_bulbs`: Số bóng đèn
+- `start_operation_date`: Ngày bắt đầu hoạt động
+- `has_projector`: Có máy chiếu (phòng lý thuyết)
+- `num_computers`: Số máy tính (phòng máy tính)
+- `specialization`: Chuyên ngành (phòng thí nghiệm)
+- `capacity`: Sức chứa (phòng thí nghiệm)
+- `has_sink`: Có bồn rửa (phòng thí nghiệm)
 
-```
-phonghoc/
-├── src/main/java/vn/giadinh/phonghoc/
-│   ├── business/                    # Business Logic Layer
-│   │   ├── factory/                # Factory patterns
-│   │   └── usecase/                # Use cases
-│   ├── dto/                        # Data Transfer Objects
-│   ├── entity/                     # Domain entities
-│   ├── persistence/                # Data Access Layer
-│   │   ├── dao/                    # Data Access Objects
-│   │   └── gateway/                # Repository interfaces
-│   ├── presentation/               # UI Layer
-│   │   ├── controller/             # Controllers
-│   │   ├── model/                  # View models
-│   │   ├── observer/               # Observer pattern
-│   │   └── view/                   # View controllers
-│   ├── shared/                     # Shared utilities
-│   │   ├── common/                 # Common utilities
-│   │   ├── enums/                  # Enumerations
-│   │   └── utils/                  # Utility classes
-│   └── Main.java                   # Application entry point
-├── src/main/resources/
-│   └── vn/giadinh/phonghoc/       # FXML files
-├── pom.xml                         # Maven configuration
-├── room.sql                        # Database schema
-├── users.sql                       # User data
-└── README.md                       # This file
-```
+## Xử Lý Lỗi
 
-## 🎨 UI Features
+### Các Loại Lỗi
 
-### Modern Design
+1. **Lỗi dữ liệu**: Dữ liệu không hợp lệ
+2. **Lỗi cơ sở dữ liệu**: Lỗi kết nối hoặc truy vấn
+3. **Lỗi không xác định**: Các lỗi khác
 
-- **Gradient Backgrounds**: Beautiful gradient backgrounds
-- **Card Layout**: Information organized in cards
-- **Responsive Design**: Adapts to different screen sizes
-- **Color-coded Actions**: Different colors for different actions
+### Hiển Thị Lỗi
 
-### User Experience
+- Sử dụng Alert dialog để hiển thị thông báo lỗi
+- Thông báo rõ ràng về nguyên nhân lỗi
+- Hướng dẫn cách khắc phục
 
-- **Confirmation Dialogs**: Prevent accidental actions
-- **Real-time Feedback**: Immediate status updates
-- **Loading States**: Visual feedback during operations
-- **Error Handling**: Clear error messages
+## Mở Rộng
 
-## 🔒 Security Features
+### Thêm Loại Phòng Mới
 
-### Authentication Security
+1. Thêm enum mới vào `RoomType.java`
+2. Cập nhật validation logic trong `validateRoomData()`
+3. Thêm trường mới vào `RoomDTO.java`
+4. Cập nhật giao diện FXML
+5. Cập nhật logic xử lý trong View
 
-- **Password Hashing**: SHA-256 encryption
-- **Input Validation**: Comprehensive input sanitization
-- **SQL Injection Prevention**: Prepared statements
-- **Session Management**: Secure session handling
+### Thêm Validation Mới
 
-### Data Protection
+1. Cập nhật method `validateRoom()` trong `AddRoomUsecase.java`
+2. Cập nhật method `validateFormData()` trong `AddRoomUsecase.java`
+3. Cập nhật logic validation trong View
 
-- **Parameterized Queries**: Prevent SQL injection
-- **Input Sanitization**: Clean user inputs
-- **Error Masking**: Hide sensitive information in errors
+## Yêu Cầu Hệ Thống
 
-## 🧪 Testing
+- Java 17 hoặc cao hơn
+- JavaFX 17+
+- Maven 3.6+
+- Cơ sở dữ liệu SQL (MySQL, PostgreSQL, hoặc H2)
 
-### Manual Testing
+## Tác Giả
 
-- **Authentication Flow**: Test login/logout/register
-- **CRUD Operations**: Test all classroom operations
-- **Search & Filter**: Test search functionality
-- **Error Handling**: Test error scenarios
-
-### Validation Testing
-
-- **Input Validation**: Test form validations
-- **Database Operations**: Test data persistence
-- **UI Updates**: Test real-time updates
-
-## 🚀 Deployment
-
-### Development
-
-```bash
-mvn clean javafx:run
-```
-
-### Production Build
-
-```bash
-mvn clean package
-java -jar target/phonghoc-1.0.0.jar
-```
-
-## 📝 API Documentation
-
-### Authentication Endpoints
-
-- `POST /auth/login` - User login
-- `POST /auth/register` - User registration
-- `POST /auth/logout` - User logout
-
-### Classroom Endpoints
-
-- `GET /rooms` - Get all classrooms
-- `POST /rooms` - Create new classroom
-- `PUT /rooms/{id}` - Update classroom
-- `DELETE /rooms/{id}` - Delete classroom
-- `GET /rooms/search` - Search classrooms
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🆘 Support
-
-For support and questions:
-
-- Create an issue in the repository
-- Check the troubleshooting guide in `AUTH_TROUBLESHOOTING.md`
-- Review the changelog in `CHANGELOG.md`
-
-## 🔄 Version History
-
-### v2.0.0 (2024-12-19)
-
-- ✅ Authentication system (Login/Register/Logout)
-- ✅ CRUD operations for classrooms
-- ✅ Search and filter functionality
-- ✅ Modern UI with BootstrapFX
-- ✅ Observer pattern implementation
-- ✅ Comprehensive error handling
-
-### v1.0.0 (2024-12-18)
-
-- ✅ Basic classroom viewing
-- ✅ Add classroom functionality
-- ✅ Clean Architecture implementation
-
-## 🙏 Acknowledgments
-
-- **JavaFX Team**: For the excellent UI framework
-- **BootstrapFX**: For modern UI styling
-- **MySQL**: For reliable database management
-- **Clean Architecture**: For architectural guidance
-
----
-
-**Built with ❤️ using Java, JavaFX, and MySQL**
+Dự án được phát triển theo mô hình Clean Architecture và SOLID principles.

@@ -9,9 +9,7 @@ import vn.giadinh.phonghoc.dto.StatusDTO;
 import vn.giadinh.phonghoc.presentation.controller.AddRoomController;
 import vn.giadinh.phonghoc.presentation.model.AddRoomModel;
 import vn.giadinh.phonghoc.presentation.observer.Subscriber;
-import vn.giadinh.phonghoc.shared.common.FormNavigator;
 import vn.giadinh.phonghoc.shared.enums.RoomType;
-import vn.giadinh.phonghoc.shared.enums.StatusCode;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -22,11 +20,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class AddRoomView implements Initializable, Subscriber {
-    // Specialization options for laboratory
     private static final List<String> SPECIALIZATIONS = Arrays.asList(
             "Chemistry", "Physics", "Biology", "Computer Science",
             "Environmental Science", "Mathematics", "Engineering");
-    // Basic Information Fields
     @FXML
     private TextField roomIdField;
     @FXML
@@ -70,71 +66,104 @@ public class AddRoomView implements Initializable, Subscriber {
     private Button cancelButton;
     @FXML
     private Button backButton;
+    // MVC Components
     private AddRoomModel model;
+    private AddRoomController controller;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        setupRoomTypeComboBox();
-        setupSpecializationComboBox();
+        initializeComponents();
         setupEventHandlers();
+        setupRoomTypeChangeListener();
+    }
+
+    private void initializeComponents() {
+        // Initialize room type combo box
+        roomTypeComboBox.getItems().addAll(
+                RoomType.LECTURE_HALL.getDisplayName(),
+                RoomType.COMPUTER_LAB.getDisplayName(),
+                RoomType.LABORATORY.getDisplayName());
+        // Initialize specialization combo box
+        specializationComboBox.getItems().addAll(SPECIALIZATIONS);
+        // Set default values
+        startDatePicker.setValue(LocalDate.now());
+        hasProjectorCheckBox.setSelected(false);
+        hasSinkCheckBox.setSelected(false);
+        // Initially hide all specific sections
         hideAllSpecificSections();
-        this.model = new AddRoomModel();
-        setViewModel(model);
     }
 
-    public void setViewModel(AddRoomModel model) {
-        this.model = model;
-        model.addSubscriber(this);
+    private void setupEventHandlers() {
+        saveButton.setOnAction(e -> handleSave());
+        clearButton.setOnAction(e -> handleClear());
+        cancelButton.setOnAction(e -> handleCancel());
+        backButton.setOnAction(e -> handleBack());
+
+        // Add real-time validation for form fields
+        setupFieldValidation();
     }
 
-    private void setupRoomTypeComboBox() {
-        // Add room type options using enum
-        for (RoomType type : RoomType.values()) {
-            roomTypeComboBox.getItems().add(type.getFullDisplayName());
-        }
-        // Add listener for room type selection
-        roomTypeComboBox.setOnAction(event -> {
-            String selectedItem = roomTypeComboBox.getValue();
-            if (selectedItem != null) {
-                handleRoomTypeSelection(selectedItem);
+    private void setupFieldValidation() {
+        // Room ID validation
+        roomIdField.textProperty().addListener((observable, oldValue, newValue) -> {
+            controller.updateRoomField("roomId", newValue);
+        });
+
+        // Building block validation
+        buildingBlockField.textProperty().addListener((observable, oldValue, newValue) -> {
+            controller.updateRoomField("buildingBlock", newValue);
+        });
+
+        // Area validation
+        areaField.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                if (!newValue.trim().isEmpty()) {
+                    Double area = Double.parseDouble(newValue);
+                    controller.updateRoomField("area", area);
+                }
+            } catch (NumberFormatException e) {
+                // Invalid number format
+            }
+        });
+
+        // Number of light bulbs validation
+        numLightBulbsField.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                if (!newValue.trim().isEmpty()) {
+                    Integer numBulbs = Integer.parseInt(newValue);
+                    controller.updateRoomField("numLightBulbs", numBulbs);
+                }
+            } catch (NumberFormatException e) {
+                // Invalid number format
+            }
+        });
+
+        // Room type validation
+        roomTypeComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                controller.updateRoomField("roomType", newValue);
             }
         });
     }
 
-    private void setupSpecializationComboBox() {
-        specializationComboBox.getItems().addAll(SPECIALIZATIONS);
+    private void setupRoomTypeChangeListener() {
+        roomTypeComboBox.setOnAction(e -> {
+            String selectedType = roomTypeComboBox.getValue();
+            showSpecificSection(selectedType);
+        });
     }
 
-    private void setupEventHandlers() {
-        // Save button handler
-        saveButton.setOnAction(event -> handleSaveRoom());
-        // Clear button handler
-        clearButton.setOnAction(event -> clearForm());
-        // Cancel button handler
-        cancelButton.setOnAction(event -> handleBack());
-        // Back button handler
-        backButton.setOnAction(event -> handleBack());
-    }
-
-    private void handleRoomTypeSelection(String selectedItem) {
-        // Hide all specific sections first
+    private void showSpecificSection(String roomTypeDisplayName) {
         hideAllSpecificSections();
-        // Show appropriate section based on selection
-        if (selectedItem.contains(RoomType.LECTURE_HALL.getCode())) {
+        if (RoomType.LECTURE_HALL.getDisplayName().equals(roomTypeDisplayName)) {
             lectureHallSection.setVisible(true);
             lectureHallSection.setManaged(true);
-            placeholderSection.setVisible(false);
-            placeholderSection.setManaged(false);
-        } else if (selectedItem.contains(RoomType.COMPUTER_LAB.getCode())) {
+        } else if (RoomType.COMPUTER_LAB.getDisplayName().equals(roomTypeDisplayName)) {
             computerLabSection.setVisible(true);
             computerLabSection.setManaged(true);
-            placeholderSection.setVisible(false);
-            placeholderSection.setManaged(false);
-        } else if (selectedItem.contains(RoomType.LABORATORY.getCode())) {
+        } else if (RoomType.LABORATORY.getDisplayName().equals(roomTypeDisplayName)) {
             laboratorySection.setVisible(true);
             laboratorySection.setManaged(true);
-            placeholderSection.setVisible(false);
-            placeholderSection.setManaged(false);
         }
     }
 
@@ -145,98 +174,173 @@ public class AddRoomView implements Initializable, Subscriber {
         computerLabSection.setManaged(false);
         laboratorySection.setVisible(false);
         laboratorySection.setManaged(false);
-        // Show placeholder when no section is selected
-        placeholderSection.setVisible(true);
-        placeholderSection.setManaged(true);
     }
 
-    private void handleSaveRoom() {
+    private void handleSave() {
         try {
-            RoomDTO roomDTO = createRoomDTO();
-            model.statusDTO = AddRoomController.execute(roomDTO);
-            StatusDTO statusdto = model.statusDTO;
-            StatusCode status = statusdto.getStatus();
-            String message = statusdto.getMessage();
-            System.out.println("Status: " + status + ", Message: " + message); // Debug info
-            if (status.equals(StatusCode.SUCCESS)) {
-                showAlert("Thành công", "Phòng học đã được lưu thành công!");
-                clearForm();
-            } else {
-                showAlert("Lỗi", "Không thể lưu phòng học: " + message);
-            }
-        } catch (NumberFormatException e) {
-            showAlert("Lỗi",
-                    "Dữ liệu không hợp lệ: Vui lòng nhập đúng định dạng số cho diện tích, số bóng đèn, số máy tính hoặc sức chứa.");
+            RoomDTO roomData = collectFormData();
+            controller.executeAddRoom(roomData);
         } catch (Exception e) {
-            showAlert("Lỗi", "Có lỗi xảy ra: " + e.getMessage());
+            showError("Lỗi", "Không thể lưu phòng học: " + e.getMessage());
         }
     }
 
-    private void clearForm() {
-        // Clear basic fields
+    private RoomDTO collectFormData() throws IllegalArgumentException {
+        RoomDTO room = new RoomDTO();
+        // Basic fields
+        String roomId = roomIdField.getText().trim();
+        if (roomId.isEmpty()) {
+            throw new IllegalArgumentException("Mã phòng không được để trống");
+        }
+        room.roomId = roomId;
+        String buildingBlock = buildingBlockField.getText().trim();
+        if (buildingBlock.isEmpty()) {
+            throw new IllegalArgumentException("Tòa nhà không được để trống");
+        }
+        room.buildingBlock = buildingBlock;
+        // Area
+        try {
+            double area = Double.parseDouble(areaField.getText().trim());
+            if (area <= 0) {
+                throw new IllegalArgumentException("Diện tích phải là số dương");
+            }
+            room.area = area;
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Diện tích phải là số hợp lệ");
+        }
+        // Number of light bulbs
+        try {
+            int numBulbs = Integer.parseInt(numLightBulbsField.getText().trim());
+            if (numBulbs < 0) {
+                throw new IllegalArgumentException("Số bóng đèn không thể là số âm");
+            }
+            room.numLightBulbs = numBulbs;
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Số bóng đèn phải là số nguyên hợp lệ");
+        }
+        // Start date
+        LocalDate startDate = startDatePicker.getValue();
+        if (startDate == null) {
+            throw new IllegalArgumentException("Ngày đưa vào hoạt động không được để trống");
+        }
+        if (startDate.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Ngày đưa vào hoạt động không thể là ngày trong tương lai");
+        }
+        room.startDateOfOperation = Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        // Room type
+        String selectedType = roomTypeComboBox.getValue();
+        if (selectedType == null) {
+            throw new IllegalArgumentException("Vui lòng chọn loại phòng");
+        }
+        // Convert display name to code
+        RoomType roomType = RoomType.fromDisplayName(selectedType);
+        if (roomType == null) {
+            throw new IllegalArgumentException("Loại phòng không hợp lệ");
+        }
+        room.roomType = roomType.getCode();
+        // Specific fields based on room type
+        switch (roomType) {
+            case LECTURE_HALL:
+                room.hasProjector = hasProjectorCheckBox.isSelected();
+                break;
+            case COMPUTER_LAB:
+                try {
+                    int numComputers = Integer.parseInt(numComputersField.getText().trim());
+                    if (numComputers <= 0) {
+                        throw new IllegalArgumentException("Số lượng máy tính phải là số dương");
+                    }
+                    room.numComputers = numComputers;
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException("Số lượng máy tính phải là số nguyên hợp lệ");
+                }
+                break;
+            case LABORATORY:
+                String specialization = specializationComboBox.getValue();
+                if (specialization == null || specialization.trim().isEmpty()) {
+                    throw new IllegalArgumentException("Chuyên ngành không được để trống");
+                }
+                room.specialization = specialization;
+                try {
+                    int capacity = Integer.parseInt(capacityField.getText().trim());
+                    if (capacity <= 0) {
+                        throw new IllegalArgumentException("Sức chứa phải là số dương");
+                    }
+                    room.capacity = capacity;
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException("Sức chứa phải là số nguyên hợp lệ");
+                }
+                room.hasSink = hasSinkCheckBox.isSelected();
+                break;
+        }
+        return room;
+    }
+
+    private void handleClear() {
+        controller.clearForm();
+        clearFormFields();
+    }
+
+    private void clearFormFields() {
         roomIdField.clear();
         roomTypeComboBox.setValue(null);
         buildingBlockField.clear();
         areaField.clear();
         numLightBulbsField.clear();
-        startDatePicker.setValue(null);
-        // Clear specific fields
+        startDatePicker.setValue(LocalDate.now());
         hasProjectorCheckBox.setSelected(false);
         numComputersField.clear();
         specializationComboBox.setValue(null);
         capacityField.clear();
         hasSinkCheckBox.setSelected(false);
-        // Hide all specific sections
         hideAllSpecificSections();
     }
 
+    private void handleCancel() {
+        // Navigate back or close form
+        System.out.println("Cancel button clicked");
+    }
+
     private void handleBack() {
-        FormNavigator.navigateToForm(backButton.getScene(), "/vn/giadinh/phonghoc/list-room-view.fxml",
-                "Quản lý phòng học");
+        // Navigate back to previous screen
+        System.out.println("Back button clicked");
     }
 
-    private RoomDTO createRoomDTO() {
-        RoomDTO roomDTO = new RoomDTO();
-        // Basic information
-        roomDTO.setRoomId(roomIdField.getText());
-        roomDTO.setBuildingBlock(buildingBlockField.getText());
-        roomDTO.setArea(Double.parseDouble(areaField.getText()));
-        roomDTO.setNumLightBulbs(Integer.parseInt(numLightBulbsField.getText()));
-        // Convert LocalDate to Date
-        LocalDate localDate = startDatePicker.getValue();
-        if (localDate != null) {
-            Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-            roomDTO.setStartDateOfOperation(date);
-        }
-        // Room type specific fields
-        String selectedRoomType = roomTypeComboBox.getValue();
-        if (selectedRoomType != null) {
-            if (selectedRoomType.contains(RoomType.LECTURE_HALL.getCode())) {
-                roomDTO.setRoomType(RoomType.LECTURE_HALL.getCode());
-                roomDTO.setHasProjector(hasProjectorCheckBox.isSelected());
-            } else if (selectedRoomType.contains(RoomType.COMPUTER_LAB.getCode())) {
-                roomDTO.setRoomType(RoomType.COMPUTER_LAB.getCode());
-                roomDTO.setNumComputers(Integer.parseInt(numComputersField.getText()));
-            } else if (selectedRoomType.contains(RoomType.LABORATORY.getCode())) {
-                roomDTO.setRoomType(RoomType.LABORATORY.getCode());
-                roomDTO.setSpecialization(specializationComboBox.getValue());
-                roomDTO.setCapacity(Integer.parseInt(capacityField.getText()));
-                roomDTO.setHasSink(hasSinkCheckBox.isSelected());
-            }
-        }
-        return roomDTO;
+    private void showError(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
-    private void showAlert(String title, String content) {
+    private void showSuccess(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setContentText(content);
+        alert.setContentText(message);
         alert.showAndWait();
     }
 
     @Override
     public void update() {
+        // Update UI based on model changes
+        StatusDTO status = model.getStatus();
+        if (status != null) {
+            if (status.getStatus() == vn.giadinh.phonghoc.shared.enums.StatusCode.SUCCESS) {
+                showSuccess("Thành công", status.getMessage());
+                clearFormFields();
+            } else if (status.getStatus() == vn.giadinh.phonghoc.shared.enums.StatusCode.FAILURE) {
+                showError("Lỗi", status.getMessage());
+            }
+        }
     }
 
+    public void setModel(AddRoomModel model) {
+        this.model = model;
+        this.model.addSubscriber(this);
+    }
+
+    public void setController(AddRoomController controller) {
+        this.controller = controller;
+    }
 }
